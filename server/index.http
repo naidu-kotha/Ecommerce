@@ -1,0 +1,77 @@
+###
+
+GET http://localhost:5000/getusers/
+
+###
+
+POST http://localhost:5000/createuser/
+Content-Type: application/json
+
+{   
+    "username":"uday",
+    "password":"uday@143"
+}
+
+###
+
+PATCH http://localhost:5000/updateuser/uday
+Content-Type: application/json
+
+{
+    "firstname":"uday",
+    "email":"uday@gmail.com",
+    "mobile":"9876543210"
+}
+
+###
+
+PATCH http://localhost:5000/changepassword/revi/
+Content-Type: application/json
+
+{
+    "oldPassword":"revi@143",
+    "password":"revi@123"
+}
+
+###
+
+POST http://localhost:5000/login/
+Content-Type: application/json
+
+{
+    "username":"revi",
+    "password":"revi@123"
+}
+
+###
+
+POST http://localhost:5000/createitem/
+Content-Type: application/json
+
+# {
+#     "title":"Joker Bobble Head Action Figure",
+#     "image_url":"https://rukminim1.flixcart.com/image/832/832/kn97te80/action-figure/3/r/h/joker-heath-ledger-batman-bobble-head-with-mobile-holder-sh-1-original-imagfz9kbwgpvgtv.jpeg?q=70",
+#     "category":"toys",
+#     "brand":"GCT",
+#     "price":"445"
+# }
+
+###
+
+POST http://localhost:5000/createorder/
+Content-Type: application/json
+
+# {
+#     "id":"1",
+#     "category":"toys",
+#     "item":"Batman Bobble Head Action Figure",
+#     "firstname":"naidu",
+#     "lastname":"kotha",
+#     "email":"naidu@gmail.com",
+#     "mobile_no":"9848150931",
+#     "address":"Kirlampudi",
+#     "pincode":"533431",
+#     "state":"Andhra Pradesh"
+# }
+
+###
