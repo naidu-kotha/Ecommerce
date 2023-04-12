@@ -1,8 +1,10 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
+const cors = require("cors");
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 const connection = require("./connection");
 
@@ -23,6 +25,16 @@ app.get("/getusers/", (req, res) => {
     if (error) {
       res.status(400);
       res.send(error);
+    } else {
+      res.send(results);
+    }
+  });
+});
+
+app.get("/getproducts/", (req, res) => {
+  connection.query("SELECT * FROM products", (error, results) => {
+    if (error) {
+      res.status(400).send(error);
     } else {
       res.send(results);
     }
@@ -128,8 +140,9 @@ app.patch("/changepassword/:username/", (req, res) => {
 });
 
 // LOGIN
-app.post("/login/", (req, res) => {
+app.post("/api/login/", (req, res) => {
   const { username, password } = req.body;
+  console.log(username, password);
   connection.query(
     "SELECT * FROM user_details WHERE username=?",
     [username],
@@ -154,6 +167,7 @@ app.post("/login/", (req, res) => {
           return;
         }
         res.send("Login successful!");
+        console.log("success");
       });
     }
   );
