@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
+import { v4 as uuidv4 } from "uuid";
 
 import "./index.css";
 function SignUp() {
@@ -14,12 +15,15 @@ function SignUp() {
 
   const formik = useFormik({
     initialValues: {
+      id: "",
       username: "",
       password: "",
     },
     onSubmit: (values) => {
+      const id = uuidv4();
+      values.id = id;
       setSubmitting(true);
-      //   console.log(values);
+      console.log(values);
     },
     validationSchema: Yup.object({
       username: Yup.string()

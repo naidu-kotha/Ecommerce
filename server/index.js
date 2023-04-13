@@ -63,13 +63,13 @@ app.get("/getproducts/", (req, res) => {
 
 // CREATE USER
 app.post("/createuser/", async (req, res) => {
-  const { username, password } = req.body;
+  const { id, username, password } = req.body;
   console.log(username, password);
   const hashedPassword = await bcrypt.hash(password, 10);
   //   console.log(hashedPassword);
   connection.query(
-    "INSERT INTO user_details(username, password) values(?,?)",
-    [username, hashedPassword],
+    "INSERT INTO user_details(id, username, password) values(?,?,?)",
+    [id, username, hashedPassword],
     (error, results) => {
       if (error) {
         res.status(400);
