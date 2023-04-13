@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Modal from "react-modal";
 import axios from "axios";
-// import CartContext from "../../context/CartContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -12,9 +11,6 @@ import "./index.css";
 
 function Profile() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // const { userDetails } = useContext(CartContext);
-  // console.log(userDetails);
 
   const formikProfile = useFormik({
     initialValues: {
@@ -49,10 +45,6 @@ function Profile() {
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
-
-  // useEffect(() => {
-  //   axios.patch("/updateuser/",);
-  // }, []);
 
   return (
     <>
