@@ -1,0 +1,51 @@
+.s-input2{
+    width:500px;
+    height: 40px;
+    border: solid 1px grey;
+}
+
+.s-disc{
+    font-size: 18px;
+    font-family: 'roboto';
+
+}
+
+.s-align-name{
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    align-items: center;
+    min-width: 100%;
+}
+
+.s-btn-align{
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    align-items: center;
+}
+
+.s-btn{
+    margin: 20px 0 0 0;
+    width: 180px;
+    height: 40px;
+    background-color: #351ae8;
+    border-radius: 5px;
+    border-width: 0px;
+    border-style: solid;
+    color: white;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.s-error{
+    color: red;
+    font-family: 'roboto';
+    font-size: 15px;
+}
+
+.s-heading{
+    color:black;
+    font-family: 'roboto';
+    font-size: 20px;
+}

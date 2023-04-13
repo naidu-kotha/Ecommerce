@@ -1,6 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
 
 const app = express();
 app.use(express.json());
@@ -19,8 +20,27 @@ const dbConnection = () => {
 
 dbConnection();
 
+// MIDDLEWARE AUTHENTICATION
+const tokenAuthentication = (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+
+  if (authHeader === undefined) {
+    res.status(401).send("Access denied. No token provided.");
+  } else {
+    const jwtToken = authHeader.split(" ")[1];
+    jwt.verify(jwtToken, "secret_key", (error, payload) => {
+      if (error) {
+        res.status(401).send(error);
+      } else {
+        req.username = payload.username;
+        next();
+      }
+    });
+  }
+};
+
 // GET USERS
-app.get("/getusers/", (req, res) => {
+app.get("/getusers/", tokenAuthentication, (req, res) => {
   connection.query("SELECT * FROM user_details", (error, results) => {
     if (error) {
       res.status(400);
@@ -44,7 +64,7 @@ app.get("/getproducts/", (req, res) => {
 // CREATE USER
 app.post("/createuser/", async (req, res) => {
   const { username, password } = req.body;
-
+  console.log(username, password);
   const hashedPassword = await bcrypt.hash(password, 10);
   //   console.log(hashedPassword);
   connection.query(
@@ -64,7 +84,7 @@ app.post("/createuser/", async (req, res) => {
         //   }
         // });
         // res.status(200);
-        res.send(results);
+        res.status(200).send(results);
       }
     }
   );
@@ -140,7 +160,7 @@ app.patch("/changepassword/:username/", (req, res) => {
 });
 
 // LOGIN
-app.post("/api/login/", (req, res) => {
+app.post("/login/", (req, res) => {
   const { username, password } = req.body;
   console.log(username, password);
   connection.query(
@@ -166,8 +186,10 @@ app.post("/api/login/", (req, res) => {
           res.status(401).send("Invalid Password");
           return;
         }
-        res.send("Login successful!");
-        console.log("success");
+        const payload = { username: username };
+        const jwtToken = jwt.sign(payload, "secret_key");
+        res.send({ jwtToken });
+        // console.log(jwtToken);
       });
     }
   );

@@ -5,13 +5,14 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // import MagazineForm from "./components/Magazine";
 // import Header from "./components/Header";
 import LoginPage from "./components/LoginPage";
-// import SignUp from "./components/SignUp";
+import Signup from "./components/Signup";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/login" exact element={<LoginPage />} />
+        <Route path="/signup" exact element={<Signup />} />
         {/* <SignUp />
       <Header />
       <Profile />

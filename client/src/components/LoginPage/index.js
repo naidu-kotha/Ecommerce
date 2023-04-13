@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
+import Cookies from "js-cookie";
 
 import "./index.css";
 
 function LoginPage() {
-  const [apiResponse, setApiResponse] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const [submitting, setSubmitting] = useState(false);
 
@@ -18,7 +19,7 @@ function LoginPage() {
     },
     onSubmit: (values) => {
       setSubmitting(true);
-      console.log(values);
+      // console.log(values);
     },
     validationSchema: Yup.object({
       username: Yup.string()
@@ -33,11 +34,13 @@ function LoginPage() {
   useEffect(() => {
     if (submitting) {
       axios
-        .post("http://localhost:5000/api/login/", formik.values)
+        .post("/login/", formik.values)
         .then((response) => {
-          setApiResponse(response.data);
+          setErrorMsg("");
           console.log(response.data);
           formik.resetForm();
+          const { jwtToken } = response.data;
+          Cookies.set("jwt_token", jwtToken, { expires: 30 });
         })
         .catch((e) => {
           console.log(e);
@@ -45,11 +48,11 @@ function LoginPage() {
         });
     }
     setSubmitting(false);
-  }, [submitting, formik.values, apiResponse]);
+  }, [submitting, formik.values, formik]);
 
   return (
     <div className="l-align-name">
-      <p className="heading">please login to be continued</p>
+      <p className="heading">Login to your account</p>
       <form onSubmit={formik.handleSubmit}>
         <div>
           <div>
@@ -88,6 +91,12 @@ function LoginPage() {
         </div>
         {errorMsg && <p className="l-error">{errorMsg.data}</p>}
       </form>
+      <p className="login-link">
+        New user?{" "}
+        <Link className="login-link-style" to="/signup">
+          Signup here
+        </Link>
+      </p>
     </div>
   );
 }
