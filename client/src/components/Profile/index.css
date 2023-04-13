@@ -1,0 +1,129 @@
+.p-margin{
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    width: 100%;
+    background-image: url("https://res.cloudinary.com/dck3ikgrn/image/upload/v1681388922/wp2939917_l8esey.jpg");
+    background-size: cover;
+    height: 100vh;
+    padding: 20px 40px;
+}
+
+.p-names{
+    color: #282c34;
+    font-family: "roboto";
+    font-size: 30px;
+}
+
+.p-input5{
+    height: 50px;
+    border-color: darkgray;
+    border-style: solid;
+    border-width: 2px;
+    font-size: 20px;
+    border-radius: 8px;
+    width: 100%;
+    padding-left: 20px;
+}
+
+.p-profile_name{
+    color: white;
+    font-family: "roboto";
+    font-size: 32px;
+    margin-top: 30px;
+}
+
+.p-buttons{
+    color: white;
+    border-width: 0px;
+    width: 100px;
+    height: 40px;
+    border-radius: 10px;
+    font-size: 20px;
+    align-items: end;
+}
+
+.p-btn-cancel{
+    background: lightslategray;
+    margin: 20px;
+}
+.p-btn-save{
+    background: lightgreen;
+    margin: 20px;
+}
+
+.p-form{
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: flex-start;
+     width: 100%;
+     background-color: white;
+     border-radius: 25px;
+     padding: 30px;
+ }
+
+.p-btn-align2{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.p-left-align{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    min-width: 100%
+
+}
+
+.number-input::-webkit-outer-spin-button,
+.number-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.p-error{
+    color: red;
+    font-family: 'roboto';
+    font-size: 25px;
+}
+
+.p-inputs-align{
+    min-width: 100%;
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-heading-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profile-heading {
+    color: #fff;
+    font-family: "Roboto";
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.edit-profile-btn {
+    border:none;
+    outline: none;
+    background-color:#fff;
+    font-size: 16px;
+    color: #000;
+    font-family: "Roboto";
+    border-radius: 4px;
+}
+
+.h-line {
+    width: 100%;
+    height: 3px;
+    background-color: red;
+}

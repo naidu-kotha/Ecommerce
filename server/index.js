@@ -40,7 +40,7 @@ const tokenAuthentication = (req, res, next) => {
 };
 
 // GET USERS
-app.get("/getusers/", tokenAuthentication, (req, res) => {
+app.get("/getusers/", (req, res) => {
   connection.query("SELECT * FROM user_details", (error, results) => {
     if (error) {
       res.status(400);
@@ -51,8 +51,17 @@ app.get("/getusers/", tokenAuthentication, (req, res) => {
   });
 });
 
+// GET PRODUCTS
 app.get("/getproducts/", (req, res) => {
-  connection.query("SELECT * FROM products", (error, results) => {
+  const { category } = req.query;
+
+  let query = "SELECT * FROM products";
+
+  if (category) {
+    query += ` WHERE category LIKE '${category}'`;
+  }
+
+  connection.query(query, (error, results) => {
     if (error) {
       res.status(400).send(error);
     } else {
@@ -162,7 +171,7 @@ app.patch("/changepassword/:username/", (req, res) => {
 // LOGIN
 app.post("/login/", (req, res) => {
   const { username, password } = req.body;
-  console.log(username, password);
+  // console.log(username, password);
   connection.query(
     "SELECT * FROM user_details WHERE username=?",
     [username],
@@ -188,7 +197,7 @@ app.post("/login/", (req, res) => {
         }
         const payload = { username: username };
         const jwtToken = jwt.sign(payload, "secret_key");
-        res.send({ jwtToken });
+        res.send({ jwtToken, results });
         // console.log(jwtToken);
       });
     }
