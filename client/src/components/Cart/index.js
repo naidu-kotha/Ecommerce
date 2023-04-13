@@ -4,16 +4,14 @@ import React from "react";
     import "./index.css";
 
 function Cart() {
-  return (
-    
-    
+  return (    
         <div>
           <h1 className="c-heading-align">My Cart</h1>
           <div className="c-btn-align">
             <button className="c-btn-style">Remove All</button>
           </div>
     
-          <ul className="cart-list">
+          <ul>
             {cartobject.map((eachCartItem) => (
               <CartItem key={eachCartItem.id} cartItemDetails={eachCartItem} />
             ))}

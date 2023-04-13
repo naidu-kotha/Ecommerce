@@ -1,0 +1,23 @@
+.c-heading-align{
+    color: rgb(24, 24, 97);
+    text-align: center;
+}
+.c-btn-align{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+.c-btn-style{
+    background-color: rgb(7, 63, 136);
+    color: #ffffff;
+    width: 150px;
+    padding: 10px;
+    font-size: 20px;
+    font-family: "roboto";
+    border: none;
+    border-radius: 15px;
+    margin-right: 30px;
+
+
+
+}

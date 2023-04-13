@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useFormik } from "formik";
@@ -13,7 +13,7 @@ function SignUp() {
   const [errorMsg, setErrorMsg] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const [submitting, setSubmitting] = useState(false);
+  //const [submitting, setSubmitting] = useState(false);
 
   const navigate = useNavigate();
 
@@ -26,28 +26,8 @@ function SignUp() {
     onSubmit: (values) => {
       const id = uuidv4();
       values.id = id;
-      setSubmitting(true);
+      //setSubmitting(true);
       console.log(values);
-    },
-    validationSchema: Yup.object({
-      username: Yup.string()
-        .min(3, "Username should be at least 3 characters long.")
-        .required("Required*"),
-      password: Yup.string()
-        .min(8, "password should be at least 8 characters long.")
-        .matches(
-          "((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,}))|((?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=.{8,}))",
-          "needed one (upperCase,lowercase,symbol)"
-        )
-        .required("Required*"),
-    }),
-  });
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  useEffect(() => {
-    if (submitting) {
       axios
         .post("/createuser", formik.values)
         .then((response) => {
@@ -72,9 +52,54 @@ function SignUp() {
             );
           }
         });
-    }
-    setSubmitting(false);
-  }, [submitting, formik.values, formik, navigate]);
+    
+    },
+    validationSchema: Yup.object({
+      username: Yup.string()
+        .min(3, "Username should be at least 3 characters long.")
+        .required("Required*"),
+      password: Yup.string()
+        .min(8, "password should be at least 8 characters long.")
+        .matches(
+          "((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,}))|((?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=.{8,}))",
+          "needed one (upperCase,lowercase,symbol)"
+        )
+        .required("Required*"),
+    }),
+  });
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  // useEffect(() => {
+  //   if (submitting) {
+  //     axios
+  //       .post("/createuser", formik.values)
+  //       .then((response) => {
+  //         setErrorMsg("");
+  //         console.log(response);
+  //         if (response.statusText === "OK") {
+  //           // alert("Sign up success. Proceed to Login.");
+  //           toast.success("Sign up success. Proceed to Login.");
+
+  //           navigate("/login", { replace: true });
+  //         }
+  //         formik.resetForm();
+  //       })
+  //       .catch((e) => {
+  //         console.log(e);
+  //         const data = e.response.data;
+  //         console.log(data);
+  //         if (data.errno === 1062) {
+  //           formik.resetForm();
+  //           setErrorMsg(
+  //             "Username already exists. Please try with a different username"
+  //           );
+  //         }
+  //       });
+  //   }
+  //   setSubmitting(false);
+  // }, [submitting, formik.values, formik, navigate]);
 
   return (
     <div className="align-left">
