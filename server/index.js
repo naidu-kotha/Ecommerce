@@ -100,13 +100,13 @@ app.post("/createuser/", async (req, res) => {
 });
 
 // UPDATE USER
-app.patch("/updateuser/:username/", (req, res) => {
-  const { username } = req.params;
-  const { firstname, email, mobile } = req.body;
+app.patch("/updateuser/", (req, res) => {
+  const { username } = req.query;
+  const { firstname, email, mobileNumber } = req.body;
 
   connection.query(
     "UPDATE user_details SET first_name=?, email=?, mobile=? WHERE username=?",
-    [firstname, email, mobile, username],
+    [firstname, email, mobileNumber, username],
     (error, results) => {
       if (error) {
         res.status(400);
@@ -197,8 +197,9 @@ app.post("/login/", (req, res) => {
         }
         const payload = { username: username };
         const jwtToken = jwt.sign(payload, "secret_key");
+        delete results[0].password;
         res.send({ jwtToken, results });
-        // console.log(jwtToken);
+        // console.log(results[0].password);
       });
     }
   );

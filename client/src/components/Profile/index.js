@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Modal from "react-modal";
+import axios from "axios";
 // import CartContext from "../../context/CartContext";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import Header from "../Header";
 import "./index.css";
@@ -15,16 +18,26 @@ function Profile() {
 
   const formikProfile = useFormik({
     initialValues: {
-      username: "",
+      firstname: "",
       mobileNumber: "",
       email: "",
     },
     onSubmit: (values) => {
-      console.log(values);
+      // console.log(values);
+      const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+      const { username } = userDetails;
+      axios
+        .patch("/updateuser/", formikProfile.values, {
+          params: { username: `${username}` },
+        })
+        .then((response) => {
+          formikProfile.resetForm();
+          toast.success("Successfully updated");
+        });
     },
     validationSchema: Yup.object({
-      username: Yup.string()
-        .min(3, "UserName Should be at least 5 charactes")
+      firstname: Yup.string()
+        .min(3, "First Name Should be at least 5 charactes")
         .required("Required*"),
       mobileNumber: Yup.string()
         .min(10, "needed 10 numbers")
@@ -37,8 +50,13 @@ function Profile() {
     setIsModalOpen(!isModalOpen);
   };
 
+  // useEffect(() => {
+  //   axios.patch("/updateuser/",);
+  // }, []);
+
   return (
     <>
+      <ToastContainer />
       <Header />
       <div className="p-margin">
         <div className="profile-details">
@@ -74,14 +92,14 @@ function Profile() {
             <div className="p-inputs-align">
               <p className="p-names">First Name</p>
               <input
-                {...formikProfile.getFieldProps("username")}
+                {...formikProfile.getFieldProps("firstname")}
                 className="p-input5"
                 type="text"
                 placeholder="Enter name"
               />
-              {formikProfile.touched.username &&
-              formikProfile.errors.username ? (
-                <div className="p-error">{formikProfile.errors.username}</div>
+              {formikProfile.touched.firstname &&
+              formikProfile.errors.firstname ? (
+                <div className="p-error">{formikProfile.errors.firstname}</div>
               ) : null}
             </div>
             <div className="p-inputs-align">
@@ -115,7 +133,11 @@ function Profile() {
             <hr />
             <div className="p-left-align">
               <div className="p-btn-align2">
-                <button className="p-buttons p-btn-cancel" type="button">
+                <button
+                  className="p-buttons p-btn-cancel"
+                  type="button"
+                  onClick={toggleModal}
+                >
                   cancel
                 </button>
                 <button className="p-buttons p-btn-save" type="submit">
@@ -124,7 +146,6 @@ function Profile() {
               </div>
             </div>
           </form>
-          <button onClick={toggleModal}>Close</button>
         </Modal>
       </div>
     </>

@@ -4,7 +4,6 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useFormik } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
-import Cookies from "js-cookie";
 // import CartContext from "../../context/CartContext";
 
 import "./index.css";
@@ -12,8 +11,7 @@ import "./index.css";
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-
-  const [submitting, setSubmitting] = useState(false);
+  // const [results, setResult] = useState();
 
   // const { setUsername } = useContext(CartContext);
 
@@ -23,7 +21,25 @@ function LoginPage() {
       password: "",
     },
     onSubmit: (values) => {
-      setSubmitting(true);
+      axios
+        .post("/login/", formik.values)
+        .then((response) => {
+          setErrorMsg("");
+          console.log(response.data);
+          formik.resetForm();
+          const { jwtToken, results } = response.data;
+          // setResult(results);
+          // const { username, first_name, mobile, email } = results[0];
+          // console.log(username, first_name, mobile, email);
+          localStorage.setItem("jwt_token", jwtToken);
+          // Cookies.set("jwt_token", jwtToken, { expires: 30 });
+          localStorage.setItem("userDetails", JSON.stringify(results[0]));
+        })
+        .catch((e) => {
+          console.log(e);
+          setErrorMsg(e.response);
+        });
+      // setSubmitting(true);
       // console.log(values);
     },
     validationSchema: Yup.object({
@@ -39,25 +55,26 @@ function LoginPage() {
     setShowPassword(!showPassword);
   };
 
-  useEffect(() => {
-    if (submitting) {
-      axios
-        .post("/login/", formik.values)
-        .then((response) => {
-          setErrorMsg("");
-          console.log(response.data);
-          formik.resetForm();
-          const { jwtToken } = response.data;
-          Cookies.set("jwt_token", jwtToken, { expires: 30 });
-          Cookies.set("userdetails", response.data, { expires: 30 });
-        })
-        .catch((e) => {
-          console.log(e);
-          setErrorMsg(e.response);
-        });
-    }
-    setSubmitting(false);
-  }, [submitting, formik.values, formik]);
+  // useEffect(() => {
+  //   axios
+  //     .post("/login/", formik.values)
+  //     .then((response) => {
+  //       setErrorMsg("");
+  //       console.log(response.data);
+  //       formik.resetForm();
+  //       const { jwtToken, results } = response.data;
+  //       setResult(results);
+  //       // const { username, first_name, mobile, email } = results[0];
+  //       // console.log(username, first_name, mobile, email);
+  //       localStorage.setItem("jwt_token", jwtToken);
+  //       // Cookies.set("jwt_token", jwtToken, { expires: 30 });
+  //       localStorage.setItem("userDetails", results);
+  //     })
+  //     .catch((e) => {
+  //       console.log(e);
+  //       setErrorMsg(e.response);
+  //     });
+  // }, []);
 
   return (
     <div className="l-align-middle">

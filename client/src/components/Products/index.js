@@ -22,7 +22,7 @@ function Products() {
     const category = selectedCategory;
 
     axios
-      .get("/getproducts/", { params: { category: `${category}` } })
+      .get("/getproducts", { params: { category: `${category}` } })
       .then((response) => {
         if (response.statusText === "OK") {
           const updatedProductsData = response.data.map((each) => ({

@@ -5,8 +5,8 @@ import { useFormik } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
 import { v4 as uuidv4 } from "uuid";
-// import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import "./index.css";
 function SignUp() {
@@ -50,7 +50,9 @@ function SignUp() {
           setErrorMsg("");
           console.log(response);
           if (response.statusText === "OK") {
-            alert("Sign up success. Proceed to Login.");
+            // alert("Sign up success. Proceed to Login.");
+            toast.success("Sign up success. Proceed to Login.")
+
             navigate("/login", { replace: true });
           }
           formik.resetForm();
@@ -132,7 +134,7 @@ function SignUp() {
           />
         </div>
       </div>
-      {/* <ToastContainer /> */}
+      <ToastContainer />
     </div>
   );
 }
