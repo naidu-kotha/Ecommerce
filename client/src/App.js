@@ -3,7 +3,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Profile from "./components/Profile";
 // import ChangePassword from "./components/ChangePassword";
 // import MagazineForm from "./components/Magazine";
-// import Header from "./components/Header";
+//import Header from "./components/Header";
+import Home from "./components/Home";
 import Cart from "./components/Cart";
 import Products from "./components/Products";
 import LoginPage from "./components/LoginPage";
@@ -63,6 +64,7 @@ function App() {
         <Routes>
           <Route path="/login" exact element={<LoginPage />} />
           <Route path="/signup" exact element={<Signup />} />
+          <Route path="/home" exact element={<Home />} />
           <Route path="/products" exact element={<Products />} />
           <Route path="/cart" exact element={<Cart />} />
           <Route path="/profile" exact element={<Profile />} />

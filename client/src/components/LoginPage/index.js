@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useFormik } from "formik";
 import axios from "axios";
+import Cookies from "js-cookie";
 import * as Yup from "yup";
 // import CartContext from "../../context/CartContext";
 
@@ -12,7 +13,7 @@ function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   // const [results, setResult] = useState();
-
+  const navigate = useNavigate();
   // const { setUsername } = useContext(CartContext);
 
   const formik = useFormik({
@@ -26,14 +27,24 @@ function LoginPage() {
         .then((response) => {
           setErrorMsg("");
           console.log(response.data);
+          if (response.statusText === "OK") {
+            // alert("Sign up success. Proceed to Login.");
+            //toast.success("Sign up success. Proceed to Login.");
+
+            navigate("/home", { replace: true });
+          }
           formik.resetForm();
           const { jwtToken, results } = response.data;
           // setResult(results);
           // const { username, first_name, mobile, email } = results[0];
           // console.log(username, first_name, mobile, email);
-          localStorage.setItem("jwt_token", jwtToken);
+          // localStorage.setItem("jwt_token", jwtToken);
           // Cookies.set("jwt_token", jwtToken, { expires: 30 });
-          localStorage.setItem("userDetails", JSON.stringify(results[0]));
+          // localStorage.setItem("userDetails", JSON.stringify(results[0]));
+          Cookies.set("jwt_token", jwtToken, { expires: 10 });
+          Cookies.set("userDetails", JSON.stringify(results[0]), {
+            expires: 10,
+          });
         })
         .catch((e) => {
           console.log(e);
@@ -45,9 +56,14 @@ function LoginPage() {
     validationSchema: Yup.object({
       username: Yup.string()
         .min(3, "Username should be at least 3 characters long.")
+
         .required("Required*"),
       password: Yup.string()
         .min(8, "password should be at least 8 characters long.")
+        .matches(
+          "((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,}))|((?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=.{8,}))",
+          "needed one (upperCase,lowercase,symbol)"
+        )
         .required("Required*"),
     }),
   });

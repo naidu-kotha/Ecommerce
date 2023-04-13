@@ -5,12 +5,19 @@ import Modal from "react-modal";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Cookies from "js-cookie";
 
 import Header from "../Header";
 import "./index.css";
 
 function Profile() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+
+  const userDetails = JSON.parse(Cookies.get("userDetails"));
+  // console.log(userDetails);
+  const { username, first_name, email, mobile } = userDetails;
 
   const formikProfile = useFormik({
     initialValues: {
@@ -37,13 +44,48 @@ function Profile() {
         .required("Required*"),
       mobileNumber: Yup.string()
         .min(10, "needed 10 numbers")
+        .matches('^[6789][0-9]{9}$',"needed numbers only")
         .required("Required*"),
-      email: Yup.string().email("invalid email id").required("Required*"),
+      email: Yup.string()
+        .email("invalid email id")
+        .matches("^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")
+        .required("Required*"),
+    }),
+  });
+
+  const formikPassword = useFormik({
+    initialValues: {
+      currentPassword: "",
+      newPassword: "",
+      reEnterNewPassword: "",
+    },
+    validationSchema: Yup.object({
+      currentPassword: Yup.string()
+        .min(8, "password should be at least 8 characters long.")
+        .matches(
+          "((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,}))|((?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=.{8,}))",
+          "needed one (upperCase,lowercase,symbol)"
+        )
+        .required("Required*"),
+      newPassword: Yup.string()
+        .min(8, "password should be at least 8 characters long.")
+        .matches(
+          "((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,}))|((?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=.{8,}))",
+          "needed one (upperCase,lowercase,symbol)"
+        )
+        .required("Required*"),
+      reEnterNewPassword: Yup.string()
+        .oneOf([Yup.ref("newPassword"), null], "Passwords must match")
+        .required("Please confirm your password"),
     }),
   });
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
+  };
+
+  const togglePasswordModal = () => {
+    setIsPasswordModalOpen(!isPasswordModalOpen);
   };
 
   return (
@@ -57,24 +99,27 @@ function Profile() {
             <button className="edit-profile-btn" onClick={toggleModal}>
               Edit Profile
             </button>
+            <button className="edit-profile-btn" onClick={togglePasswordModal}>
+              Edit Password
+            </button>
           </div>
           <hr className="h-line" />
           <div className="profile-details-container">
             <div className="details-container">
-              <h1>Username</h1>
-              <p></p>
+              <h1 className="user-details">Username:</h1>
+              <h1 className="user-sub-details">{username}</h1>
             </div>
             <div className="details-container">
-              <h1>Full name</h1>
-              <p></p>
+              <h1 className="user-details">Full name:</h1>
+              <h1 className="user-sub-details">{first_name}</h1>
             </div>
             <div className="details-container">
-              <h1>email</h1>
-              <p></p>
+              <h1 className="user-details">email:</h1>
+              <h1 className="user-sub-details">{email}</h1>
             </div>
             <div className="details-container">
-              <h1>mobile</h1>
-              <p></p>
+              <h1 className="user-details">mobile:</h1>
+              <h1 className="user-sub-details">{mobile}</h1>
             </div>
           </div>
         </div>
@@ -139,7 +184,85 @@ function Profile() {
             </div>
           </form>
         </Modal>
+        <Modal isOpen={isPasswordModalOpen} className="modal-style">
+          <div className="c-margin">
+            <div className="c-aligning">
+              {/* <h1 className="c-profile_name">Change Password</h1> */}
+              <div className="c-aligning">
+                <form className="c-form" onSubmit={formikPassword.handleSubmit}>
+                  <div className="c-inputs-align">
+                    <label className="user-details">Current Password</label>
+                    <input
+                      className="c-input1"
+                      {...formikPassword.getFieldProps("currentPassword")}
+                      type="password"
+                      placeholder="Enter current password"
+                    />
+                    {formikPassword.touched.currentPassword &&
+                    formikPassword.errors.currentPassword ? (
+                      <div className="c-error">
+                        {formikPassword.errors.currentPassword}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className="c-inputs-align">
+                    <p className="c-names">Enter New Password</p>
+                    <input
+                      {...formikPassword.getFieldProps("newPassword")}
+                      className="c-input1"
+                      type="password"
+                      placeholder="Enter New Password"
+                    />
+                    {formikPassword.touched.newPassword &&
+                    formikPassword.errors.newPassword ? (
+                      <div className="c-error">
+                        {formikPassword.errors.newPassword}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className="c-inputs-align">
+                    <p className="c-names">Re-Enter New Password</p>
+                    <input
+                      {...formikPassword.getFieldProps("reEnterNewPassword")}
+                      className="c-input1"
+                      type="password"
+                      placeholder="Re-Enter New Password"
+                    />
+                    {formikPassword.touched.reEnterNewPassword &&
+                    formikPassword.errors.reEnterNewPassword ? (
+                      <div className="c-error">
+                        {formikPassword.errors.reEnterNewPassword}
+                      </div>
+                    ) : null}
+                  </div>
+
+                  <hr />
+                  <div className="c-left-align">
+                    <div className="c-btn-align3">
+                      <button
+                        className="c-buttons c-btn-cancel"
+                        type="button"
+                        onClick={togglePasswordModal}
+                      >
+                        cancel
+                      </button>
+                      <button className="c-buttons c-btn-save" type="submit">
+                        save
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <img
+                className="img"
+                alt="change password bg"
+                src="https://res.cloudinary.com/dck3ikgrn/image/upload/v1681409529/5fz9SMYxWbv44jFVcD4vmd-970-80.jpg_wdqezt.webp"
+              />
+            </div>
+          </div>
+        </Modal>
       </div>
+      xx
     </>
   );
 }

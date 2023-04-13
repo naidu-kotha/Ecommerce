@@ -35,6 +35,10 @@ function SignUp() {
         .required("Required*"),
       password: Yup.string()
         .min(8, "password should be at least 8 characters long.")
+        .matches(
+          "((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,}))|((?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=.{8,}))",
+          "needed one (upperCase,lowercase,symbol)"
+        )
         .required("Required*"),
     }),
   });
@@ -51,7 +55,7 @@ function SignUp() {
           console.log(response);
           if (response.statusText === "OK") {
             // alert("Sign up success. Proceed to Login.");
-            toast.success("Sign up success. Proceed to Login.")
+            toast.success("Sign up success. Proceed to Login.");
 
             navigate("/login", { replace: true });
           }
