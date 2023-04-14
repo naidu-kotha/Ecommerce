@@ -31,7 +31,7 @@ function LoginPage() {
             // alert("Sign up success. Proceed to Login.");
             //toast.success("Sign up success. Proceed to Login.");
 
-            navigate("/home", { replace: true });
+            navigate("/", { replace: true });
           }
           formik.resetForm();
           const { jwtToken, results } = response.data;

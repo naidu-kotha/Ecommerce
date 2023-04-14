@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Select from "react-select";
+import Header from "../Header";
 
 import CartContext from "../../context/CartContext";
 import "./index.css";
@@ -75,6 +76,7 @@ function Products() {
 
   return (
     <div className="product-container">
+      <Header/>
       <div className="products-select-container">
         <h1 className="products-heading">All Products</h1>
         <Select

@@ -1,40 +1,26 @@
-// import React from 'react';
-// import { Route, Navigate } from 'react-router-dom';
-
-// function ProtectedRoute({ isAuthenticated, ...props }) {
-//   return isAuthenticated ? <Route {...props} /> : <Navigate to="/login" />;
-// }
-
-// export default ProtectedRoute;
-
-
-// import { Route, Navigate } from 'react-router-dom';
-// import Cookies from 'js-cookie';
-
-// const ProtectedRoute = ({ component: Component, ...rest }) => {
-//   const isAuthenticated = Cookies.get('jwt_token') !== null;
-//   return (
-//     <Route
-//       {...rest}
-//       render={(props) =>
-//         isAuthenticated ? (
-//           <Component {...props} />
-//         ) : (
-//           <Navigate to={{ pathname: '/login' }} />
-//         )
-//       }
-//     />
-//   );
-// };
-
-// export default ProtectedRoute;
-
-// import React from 'react'
-// import { Navigate } from 'react-router-dom'
-// function ProtectedRoute({ isSignedIn, children }) {
-//   if (!isSignedIn) {
-//     return <Navigate to="/" replace />
-//   }
-//   return children
-// }
-// export default ProtectedRoute;
+import React, { useEffect, useState } from "react";
+import { Route, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+const ProtectedRoute = (props) => {
+    const navigate = useNavigate();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const checkUserToken = () => {
+        const userToken = Cookies.get("jwt_token");
+        if (!userToken || userToken === 'undefined') {
+            setIsLoggedIn(false);
+            return navigate('/login');
+        }
+        setIsLoggedIn(true);
+    }
+    useEffect(() => {
+            checkUserToken();
+        }, [isLoggedIn]);
+    return (
+        <React.Fragment>
+            {
+                isLoggedIn ? props.children : null
+            }
+        </React.Fragment>
+    );
+}
+export default ProtectedRoute;

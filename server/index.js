@@ -205,19 +205,39 @@ app.post("/login/", (req, res) => {
   );
 });
 
-// ADD NEW ITEM
-app.post("/createitem/", (req, res) => {
-  const { category, title, image_url, brand, price } = req.body;
-
+// ADD TO CART
+app.post("/addtocart/", (req, res) => {
+  // const { username } = req.query;
+  const { item, quantity, username } = req.body;
+  const { id, category, title, imageUrl, brand, price } = item;
+  // console.log(id, category, title, imageUrl, brand, price, quantity);
   connection.query(
-    "INSERT INTO products(title, brand, category, price, image_url) VALUES(?,?,?,?,?)",
-    [title, brand, category, price, image_url],
+    "INSERT INTO cart(id, username, title, brand, category, price, image_url, quantity) VALUES(?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity)",
+    [id, username, title, brand, category, price, imageUrl, quantity],
     (error, results) => {
       if (error) {
         res.status(400).send(error);
         return;
       }
-      res.send("Product successfully added");
+      const message = "Product successfully added";
+      res.send({ results, message });
+    }
+  );
+});
+
+// GET PRODUCTS FROM CART
+app.get("/getitems/", (req, res) => {
+  const { username } = req.query;
+  console.log(username);
+  connection.query(
+    `SELECT * FROM cart WHERE username='${username}'`,
+    (error, results) => {
+      if (error) {
+        res.status(400).send(error);
+        return;
+      }
+      console.log(results);
+      res.send(results);
     }
   );
 });
