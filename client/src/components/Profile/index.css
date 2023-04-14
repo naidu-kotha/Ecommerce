@@ -177,6 +177,7 @@
     background-color:#ffffff;
     border-radius: 8px;
     opacity: 0.5;
+    outline: none;
     
 }
 .c-aligning{
@@ -251,4 +252,30 @@
 
 .modal-style{
     padding: 0;
+}
+.p-password-symbol{
+    border:none;
+    outline: none;
+}
+
+.p-container-visible{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    border: none;
+    background-color:#ffffff;
+
+    opacity: 0.5;
+    border-radius: 5px;
+}
+.p-eye-button{
+    border:none;
+    outline: none;
+    background-color: transparent;
+    font-size: 18px;
+    color: #351313;
+    padding: 0;
+    padding-right: 10px;
 }

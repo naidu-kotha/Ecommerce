@@ -1,20 +1,24 @@
-import React, { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Profile from "./components/Profile";
-// import ChangePassword from "./components/ChangePassword";
-// import MagazineForm from "./components/Magazine";
-//import Header from "./components/Header";
+import Cookies from "js-cookie";
 import Home from "./components/Home";
 import Cart from "./components/Cart";
 import Products from "./components/Products";
 import LoginPage from "./components/LoginPage";
 import Signup from "./components/Signup";
 import CartContext from "./context/CartContext";
+import NotFound from "./components/NotFound";
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
 
-  // const [userDetails, setUserDetails] = useState("");
+  const [isSignedIn, setIsSignedIn] = useState(false);
+
+  useEffect(() => {
+    const isAuthenticated = Cookies.get('jwt_token') !== null;
+    setIsSignedIn(isAuthenticated);
+  }, []);
 
   const addItemToCart = (item, quantity) => {
     const existingItem = cartItems.find((cartItem) => cartItem.id === item.id);
@@ -45,10 +49,6 @@ function App() {
     setCartItems([]);
   };
 
-  // const setUsername = (name) => {
-  //   setUserDetails(name);
-  // };
-
   return (
     <BrowserRouter>
       <CartContext.Provider
@@ -57,25 +57,21 @@ function App() {
           addItemToCart,
           removeItemFromCart,
           clearCart,
-          // setUsername,
-          // userDetails,
         }}
       >
         <Routes>
-          <Route path="/login" exact element={<LoginPage />} />
-          <Route path="/signup" exact element={<Signup />} />
-          <Route path="/home" exact element={<Home />} />
-          <Route path="/products" exact element={<Products />} />
-          <Route path="/cart" exact element={<Cart />} />
-          <Route path="/profile" exact element={<Profile />} />
-          {/* <SignUp />
-      <Header />
-      <Profile />
-      <ChangePassword />
-      <MagazineForm /> */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/home" element={isSignedIn ? <Home /> : <Navigate to="/login" />} />
+          <Route path="/products" element={isSignedIn ? <Products /> : <Navigate to="/login" />}/>
+          <Route path="/cart" element={isSignedIn ? <Cart /> : <Navigate to="/login" />} />
+          <Route path="/profile" element={isSignedIn ? <Profile /> : <Navigate to="/login" />} />
+          <Route path="/notfound" element = {<NotFound/>}/>
+          {/* <Navigate to="/notfound"/>  */}
         </Routes>
       </CartContext.Provider>
     </BrowserRouter>
   );
 }
+
 export default App;

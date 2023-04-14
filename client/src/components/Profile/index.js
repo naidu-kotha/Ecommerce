@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Modal from "react-modal";
 import axios from "axios";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
@@ -12,6 +13,8 @@ import "./index.css";
 
 function Profile() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
 
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
@@ -44,7 +47,7 @@ function Profile() {
         .required("Required*"),
       mobileNumber: Yup.string()
         .min(10, "needed 10 numbers")
-        .matches('^[6789][0-9]{9}$',"needed numbers only")
+        .matches("^[6789][0-9]{9}$", "needed numbers only")
         .required("Required*"),
       email: Yup.string()
         .email("invalid email id")
@@ -86,6 +89,12 @@ function Profile() {
 
   const togglePasswordModal = () => {
     setIsPasswordModalOpen(!isPasswordModalOpen);
+  };
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+  const togglePasswordVisibility2 = () => {
+    setShowPassword2(!showPassword2);
   };
 
   return (
@@ -207,12 +216,24 @@ function Profile() {
                   </div>
                   <div className="c-inputs-align">
                     <p className="c-names">Enter New Password</p>
-                    <input
-                      {...formikPassword.getFieldProps("newPassword")}
-                      className="c-input1"
-                      type="password"
-                      placeholder="Enter New Password"
-                    />
+                    <div className="p-container-visible">
+                      <input
+                        {...formikPassword.getFieldProps("newPassword")}
+                        className="c-input1"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Enter New Password"
+                      />
+                      <span>
+                        <button
+                          type="button"
+                          className="p-eye-button p-password-symbol"
+                          onClick={togglePasswordVisibility}
+                        >
+                          {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </button>
+                      </span>
+                    </div>
+
                     {formikPassword.touched.newPassword &&
                     formikPassword.errors.newPassword ? (
                       <div className="c-error">
@@ -221,6 +242,33 @@ function Profile() {
                     ) : null}
                   </div>
                   <div className="c-inputs-align">
+                    <p className="c-names">Re-Enter New Password</p>
+                    <div className="p-container-visible">
+                      <input
+                        {...formikPassword.getFieldProps("reEnterNewPassword")}
+                        className="c-input1"
+                        type={showPassword2 ? "text" : "password"}
+                        placeholder="Enter New Password"
+                      />
+                      <span>
+                        <button
+                          type="button"
+                          className="p-eye-button p-password-symbol"
+                          onClick={togglePasswordVisibility2}
+                        >
+                          {showPassword2 ? <FaEyeSlash /> : <FaEye />}
+                        </button>
+                      </span>
+                    </div>
+
+                    {formikPassword.touched.reEnterNewPassword &&
+                    formikPassword.errors.reEnterNewPassword ? (
+                      <div className="c-error">
+                        {formikPassword.errors.reEnterNewPassword}
+                      </div>
+                    ) : null}
+                  </div>
+                  {/* <div className="c-inputs-align">
                     <p className="c-names">Re-Enter New Password</p>
                     <input
                       {...formikPassword.getFieldProps("reEnterNewPassword")}
@@ -234,7 +282,7 @@ function Profile() {
                         {formikPassword.errors.reEnterNewPassword}
                       </div>
                     ) : null}
-                  </div>
+                  </div> */}
 
                   <hr />
                   <div className="c-left-align">
