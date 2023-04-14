@@ -24,6 +24,7 @@
     border-radius: 8px;
     width: 100%;
     padding-left: 8px;
+    background-color: darkgray ;
 }
 
 .p-profile_name{
@@ -252,4 +253,28 @@
 
 .modal-style{
     padding: 0;
+}
+.p-password-symbol{
+    border:none;
+    outline: none;
+}
+
+.p-container-visible{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    border: solid 1px #ffffff;
+    border-radius: 5px;
+    background-color: darkgray;
+}
+.p-eye-button{
+    border:none;
+    outline: none;
+    background-color: transparent;
+    font-size: 18px;
+    color: #5d1818;
+    padding: 0;
+    padding-right: 10px;
 }
