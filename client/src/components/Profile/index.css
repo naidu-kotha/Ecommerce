@@ -57,6 +57,10 @@
      flex-direction: column;
      justify-content: center;
      padding: 30px;
+     
+ }
+ .p-model-size{
+    width: 50%;
  }
 
 .p-btn-align2{

@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useFormik } from "formik";
@@ -7,10 +7,24 @@ import * as Yup from "yup";
 import { v4 as uuidv4 } from "uuid";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Select from "react-select";
 
 import "./index.css";
+
 function SignUp() {
+  const roleConstants = [
+    {
+      label: "ADMIN",
+      value: "admin",
+    },
+    {
+      label: "USER",
+      value: "user",
+    },
+  ];
+
   const [errorMsg, setErrorMsg] = useState("");
+  const [role, selectRole] = useState(roleConstants[1].value);
   const [showPassword, setShowPassword] = useState(false);
 
   //const [submitting, setSubmitting] = useState(false);
@@ -26,6 +40,7 @@ function SignUp() {
     onSubmit: (values) => {
       const id = uuidv4();
       values.id = id;
+      values.role = role;
       //setSubmitting(true);
       console.log(values);
       axios
@@ -52,7 +67,6 @@ function SignUp() {
             );
           }
         });
-    
     },
     validationSchema: Yup.object({
       username: Yup.string()
@@ -71,35 +85,10 @@ function SignUp() {
     setShowPassword(!showPassword);
   };
 
-  // useEffect(() => {
-  //   if (submitting) {
-  //     axios
-  //       .post("/createuser", formik.values)
-  //       .then((response) => {
-  //         setErrorMsg("");
-  //         console.log(response);
-  //         if (response.statusText === "OK") {
-  //           // alert("Sign up success. Proceed to Login.");
-  //           toast.success("Sign up success. Proceed to Login.");
-
-  //           navigate("/login", { replace: true });
-  //         }
-  //         formik.resetForm();
-  //       })
-  //       .catch((e) => {
-  //         console.log(e);
-  //         const data = e.response.data;
-  //         console.log(data);
-  //         if (data.errno === 1062) {
-  //           formik.resetForm();
-  //           setErrorMsg(
-  //             "Username already exists. Please try with a different username"
-  //           );
-  //         }
-  //       });
-  //   }
-  //   setSubmitting(false);
-  // }, [submitting, formik.values, formik, navigate]);
+  const setRole = (event) => {
+    console.log(event);
+    selectRole(event.value);
+  };
 
   return (
     <div className="align-left">
@@ -120,7 +109,7 @@ function SignUp() {
               ) : null}
             </div>
             <div className="s-input-container">
-              <label className="s-disc ">PASSWORD*</label>
+              <label className="s-disc">PASSWORD*</label>
               <div className="s-container-visible">
                 <br />
                 <input
@@ -141,6 +130,17 @@ function SignUp() {
               {formik.touched.password && formik.errors.password ? (
                 <div className="s-error">{formik.errors.password}</div>
               ) : null}
+            </div>
+            <div className="s-input-container">
+              <label htmlFor="role" className="s-disc">
+                ROLE*
+              </label>
+              <Select
+                id="role"
+                defaultValue={roleConstants[1]}
+                options={roleConstants}
+                onChange={setRole}
+              />
             </div>
             <div className="s-btn-align">
               <button type="submit" className="s-btn">

@@ -103,6 +103,7 @@ app.post("/createuser/", async (req, res) => {
 app.patch("/updateuser/", (req, res) => {
   const { username } = req.query;
   const { fullname, email, mobile } = req.body;
+  console.log(username);
 
   connection.query(
     "UPDATE user_details SET fullname=?, email=?, mobile=? WHERE username=?",
@@ -241,6 +242,27 @@ app.get("/getitems/", (req, res) => {
     }
   );
 });
+
+// REMOVE ITEM FROM CART
+app.delete("/deleteitem/", (req, res) => {
+  const { id } = req.body;
+  const { username } = req.query;
+  console.log(id, username);
+
+  connection.query(
+    "DELETE FROM cart WHERE id=? AND username=?",
+    [id, username],
+    (error, results) => {
+      if (error) {
+        res.status(400).send(error);
+      } else {
+        const message = "Product successfully deleted";
+        res.send({ results, message }); 
+      }
+    }
+  );
+});
+
 
 // CREATE NEW ORDER
 app.post("/createorder/", (req, res) => {

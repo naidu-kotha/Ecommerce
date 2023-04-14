@@ -28,45 +28,37 @@ export const states = [
     "Uttarakhand",
     "West Bengal",
   ];
-  export const cartobject = [
+   export const categoryList = [
     {
-      id: 1,
-      brand: "MAJIK",
-      category: "clothes",
-      imageUrl:
-        "https://assets.ccbp.in/frontend/react-js/ecommerce/clothes-cap.png",
-      price: 288,
-      title: "Wide Bowknot Hat",
-      quantity: 1,
+      label: "default",
+      value: "",
     },
     {
-      id: 2,
-      brand: "Huetrap",
-      category: "clothes",
-      imageUrl:
-        "https://assets.ccbp.in/frontend/react-js/ecommerce/clothes-fit-t-shirt.png",
-      price: 395,
-      title: "Plain Round Neck T-shirt",
-      quantity: 1,
+      label: "clothes",
+      value: "clothes",
     },
     {
-      id: 4,
-      brand: "LEVIS",
-      category: "clothes",
-      imageUrl:
-        "https://assets.ccbp.in/frontend/react-js/ecommerce/clothes-jacket.png",
-      price: 2500,
-      title: "Men's Waistcoat",
-      quantity: 1,
+      label: "appliances",
+      value: "appliances",
     },
     {
-      id: 3,
-      brand: "Scott International",
-      category: "clothes",
-      imageUrl:
-        "https://assets.ccbp.in/frontend/react-js/ecommerce/clothes-hoodie.png",
-      price: 498,
-      title: "Cotton Hoodie",
-      quantity: 1,
+      label: "electronics",
+      value: "electronics",
     },
+    {
+      label: "grocery",
+      value: "grocery",
+    },
+    {
+      label: "toys",
+      value: "toys",
+    },
+  ];
+
+  export const numberOptions = [
+    { label: 1, value: 1 },
+    { label: 2, value: 2 },
+    { label: 3, value: 3 },
+    { label: 4, value: 4 },
+    { label: 5, value: 5 },
   ];

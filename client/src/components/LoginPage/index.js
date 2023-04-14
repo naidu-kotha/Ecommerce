@@ -12,9 +12,7 @@ import "./index.css";
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  // const [results, setResult] = useState();
   const navigate = useNavigate();
-  // const { setUsername } = useContext(CartContext);
 
   const formik = useFormik({
     initialValues: {
@@ -35,13 +33,10 @@ function LoginPage() {
           }
           formik.resetForm();
           const { jwtToken, results } = response.data;
-          // setResult(results);
-          // const { username, first_name, mobile, email } = results[0];
-          // console.log(username, first_name, mobile, email);
-          // localStorage.setItem("jwt_token", jwtToken);
-          // Cookies.set("jwt_token", jwtToken, { expires: 30 });
-          // localStorage.setItem("userDetails", JSON.stringify(results[0]));
+          const { role } = results[0];
+          // console.log(role);
           Cookies.set("jwt_token", jwtToken, { expires: 10 });
+          Cookies.set("role", role, { expires: 10 });
           Cookies.set("userDetails", JSON.stringify(results[0]), {
             expires: 10,
           });
@@ -70,27 +65,6 @@ function LoginPage() {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
-  // useEffect(() => {
-  //   axios
-  //     .post("/login/", formik.values)
-  //     .then((response) => {
-  //       setErrorMsg("");
-  //       console.log(response.data);
-  //       formik.resetForm();
-  //       const { jwtToken, results } = response.data;
-  //       setResult(results);
-  //       // const { username, first_name, mobile, email } = results[0];
-  //       // console.log(username, first_name, mobile, email);
-  //       localStorage.setItem("jwt_token", jwtToken);
-  //       // Cookies.set("jwt_token", jwtToken, { expires: 30 });
-  //       localStorage.setItem("userDetails", results);
-  //     })
-  //     .catch((e) => {
-  //       console.log(e);
-  //       setErrorMsg(e.response);
-  //     });
-  // }, []);
 
   return (
     <div className="l-align-middle">

@@ -168,11 +168,8 @@ function Profile() {
                 type="number"
                 placeholder="Enter Mobile"
               />
-              {formikProfile.touched.mobile &&
-              formikProfile.errors.mobile ? (
-                <div className="p-error">
-                  {formikProfile.errors.mobile}
-                </div>
+              {formikProfile.touched.mobile && formikProfile.errors.mobile ? (
+                <div className="p-error">{formikProfile.errors.mobile}</div>
               ) : null}
             </div>
             <div className="p-inputs-align">

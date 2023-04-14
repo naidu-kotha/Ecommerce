@@ -1,15 +1,43 @@
-import { useState, React } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useFormik } from "formik";
+import Select from "react-select";
+import axios from "axios";
 import * as Yup from "yup";
-import { states } from "../constants";
+import { states, categoryList, numberOptions } from "../constants";
+import CartContext from "../../context/CartContext";
 import "./index.css";
 
 function MagazineForm() {
   const [selectedState, setSelectedState] = useState("");
+  const [selectedCategory, setCategory] = useState([]);
+  const [productsList, setProductsList] = useState([]);
+  const [cartQuantity, setCartQuantity] = useState(1);
+
+  const { addItemToCart } = useContext(CartContext);
 
   const handleSelect = (event) => {
     setSelectedState(event.target.value);
   };
+  useEffect(() => {
+    const category = selectedCategory;
+
+    axios
+      .get("/getproducts", { params: { category: `${category}` } })
+      .then((response) => {
+        if (response.statusText === "OK") {
+          const updatedProductsData = response.data.map((each) => ({
+            id: each.id,
+            brand: each.brand,
+            category: each.category,
+            imageUrl: each.image_url,
+            price: each.price,
+            title: each.title,
+          }));
+          setProductsList(updatedProductsData);
+          console.log(productsList);
+        }
+      });
+  }, [selectedCategory]);
 
   const formikMagzine = useFormik({
     initialValues: {
@@ -126,6 +154,54 @@ function MagazineForm() {
                 ))}
               </select>
             </div>
+          </div>
+          <div>
+            <Select
+              className="product-category-select"
+              options={categoryList}
+              isSearchable={false}
+              placeholder={<div>Select required category</div>}
+              onChange={(option) => setCategory(option.value)}
+            />
+          </div>
+          <div>
+            <ul className="products-list-container">
+              {productsList.map((eachProduct) => (
+                <li key={eachProduct.id} className="product-card">
+                  {/* <img
+                    src={eachProduct.imageUrl}
+                    alt={eachProduct.title}
+                    className="product-image"
+                  /> */}
+                  
+                  <div className="product-details">
+                    {/* <div>
+                      <h1 className="product-title">{eachProduct.title}</h1>
+                      <p className="product-brand">by {eachProduct.brand}</p>
+                      <p className="product-price">Rs.{eachProduct.price}</p>
+                    </div> */}
+                    <div className="product-btn-container">
+                      <Select
+                        options={numberOptions}
+                        defaultValue={numberOptions[0]}
+                        isSearchable={false}
+                        className="product-select"
+                        onChange={(option) => setCartQuantity(option.value)}
+                      />
+                      <button
+                        className="product-cart-btn"
+                        onClick={() => {
+                          addItemToCart(eachProduct, cartQuantity);
+                          setCartQuantity(1);
+                        }}
+                      >
+                        Add to cart
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
           <div className="btn-submit-align">
             <button type="submit" className="button-submit btn-save">

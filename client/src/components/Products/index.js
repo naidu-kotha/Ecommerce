@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Select from "react-select";
 import Header from "../Header";
-
+import {categoryList,numberOptions} from "../constants.js"
 import CartContext from "../../context/CartContext";
 import "./index.css";
 
@@ -39,41 +39,7 @@ function Products() {
       });
   }, [selectedCategory]);
 
-  const categoryList = [
-    {
-      label: "default",
-      value: "",
-    },
-    {
-      label: "clothes",
-      value: "clothes",
-    },
-    {
-      label: "appliances",
-      value: "appliances",
-    },
-    {
-      label: "electronics",
-      value: "electronics",
-    },
-    {
-      label: "grocery",
-      value: "grocery",
-    },
-    {
-      label: "toys",
-      value: "toys",
-    },
-  ];
-
-  const numberOptions = [
-    { label: 1, value: 1 },
-    { label: 2, value: 2 },
-    { label: 3, value: 3 },
-    { label: 4, value: 4 },
-    { label: 5, value: 5 },
-  ];
-
+  
   return (
     <>
       <Header />
