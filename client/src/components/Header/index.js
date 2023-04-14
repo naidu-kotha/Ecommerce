@@ -1,6 +1,6 @@
 import React from "react";
 import Container from "react-bootstrap/Container";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -19,7 +19,7 @@ function Header() {
   return (
     <Navbar collapseOnSelect expand="lg" className="home-bg-container">
       <Container>
-        <Navbar.Brand className="h-heading-nav" href="/langingPage">
+        <Navbar.Brand className="h-heading-nav" href="/">
           NM-Trends
         </Navbar.Brand>
         <div>
@@ -33,13 +33,13 @@ function Header() {
                 Products
               </Nav.Link>
               <Nav.Link className="h-routes" href="/cart">
-                cart
+                Cart
               </Nav.Link>
               <Nav.Link className="h-routes" href="/profile">
-                profile
+                Profile
               </Nav.Link>
               <Nav.Link onClick={onClickLogOut} className="h-routes">
-                logout
+                Logout
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>

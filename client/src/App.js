@@ -3,11 +3,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Home from './components/Home';
-import NotFound from './components/NotFound'
+import Home from "./components/Home";
+import NotFound from "./components/NotFound";
 
 import Profile from "./components/Profile";
-//import MagazineForm from "./components/Magazine";
+import MagazineForm from "./components/Magazine";
 import Cart from "./components/Cart";
 import Products from "./components/Products";
 import LoginPage from "./components/LoginPage";
@@ -34,13 +34,13 @@ function App() {
       });
   };
 
-  const removeItemFromCart = (itemId) => {
-    setCartItems(cartItems.filter((cartItem) => cartItem.id !== itemId));
-  };
+  // const removeItemFromCart = (itemId) => {
+  //   setCartItems(cartItems.filter((cartItem) => cartItem.id !== itemId));
+  // };
 
-  const clearCart = () => {
-    setCartItems([]);
-  };
+  // const clearCart = () => {
+  //   setCartItems([]);
+  // };
 
   return (
     <BrowserRouter>
@@ -48,9 +48,9 @@ function App() {
         value={{
           cartItems,
           addItemToCart,
-          removeItemFromCart,
-          clearCart,
-          setCartItems
+          // removeItemFromCart,
+          // clearCart,
+          setCartItems,
           // setUsername,
           // userDetails,
         }}
@@ -66,26 +66,43 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/products" exact element={
+          <Route
+            path="/products"
+            exact
+            element={
               <ProtectedRoute>
                 <Products />
               </ProtectedRoute>
             }
           />
-          <Route path="/cart" exact element={
+          <Route
+            path="/cart"
+            exact
+            element={
               <ProtectedRoute>
                 <Cart />
               </ProtectedRoute>
             }
           />
-          <Route path="/profile" exact element={
+          <Route
+            path="/profile"
+            exact
+            element={
               <ProtectedRoute>
                 <Profile />
               </ProtectedRoute>
             }
           />
-          <Route path="/notfound" exact element={<NotFound />} />
-          
+          <Route
+            path="/magazine"
+            exact
+            element={
+              <ProtectedRoute>
+                <MagazineForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<NotFound />} />
 
           {/* <SignUp />
       <Header />

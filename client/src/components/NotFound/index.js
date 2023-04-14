@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./index.css";
 
 const NotFound = () => (
@@ -8,6 +9,14 @@ const NotFound = () => (
       alt="not found"
       className="not-found-img"
     />
+    <Link to="/">
+      <button
+        className="home-btn-shop
+      "
+      >
+        Home
+      </button>
+    </Link>
   </div>
 );
 

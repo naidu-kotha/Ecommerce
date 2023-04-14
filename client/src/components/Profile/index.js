@@ -20,12 +20,12 @@ function Profile() {
 
   const userDetails = JSON.parse(Cookies.get("userDetails"));
   // console.log(userDetails);
-  const { username, fullname, email, mobileNumber } = userDetails;
+  const { username, fullname, email, mobile } = userDetails;
 
   const formikProfile = useFormik({
     initialValues: {
       fullname: "",
-      mobileNumber: "",
+      mobile: "",
       email: "",
     },
     onSubmit: (values) => {
@@ -52,7 +52,7 @@ function Profile() {
       fullname: Yup.string()
         .min(3, "Fullname Should be at least 5 charactes")
         .required("Required*"),
-      mobileNumber: Yup.string()
+      mobile: Yup.string()
         .min(10, "needed 10 numbers")
         .matches("^[6789][0-9]{9}$", "needed numbers only")
         .required("Required*"),
@@ -140,7 +140,7 @@ function Profile() {
             </div>
             <div className="details-container">
               <h1 className="user-details">mobile:</h1>
-              <h1 className="user-sub-details">{mobileNumber}</h1>
+              <h1 className="user-sub-details">{mobile}</h1>
             </div>
           </div>
         </div>
@@ -163,15 +163,15 @@ function Profile() {
             <div className="p-inputs-align">
               <p className="p-names">Mobile Number</p>
               <input
-                {...formikProfile.getFieldProps("mobileNumber")}
+                {...formikProfile.getFieldProps("mobile")}
                 className="p-input5 number-input"
                 type="number"
                 placeholder="Enter Mobile"
               />
-              {formikProfile.touched.mobileNumber &&
-              formikProfile.errors.mobileNumber ? (
+              {formikProfile.touched.mobile &&
+              formikProfile.errors.mobile ? (
                 <div className="p-error">
-                  {formikProfile.errors.mobileNumber}
+                  {formikProfile.errors.mobile}
                 </div>
               ) : null}
             </div>

@@ -9,3 +9,11 @@
   .not-found-img {
     width: 400px;
   }
+  .home-btn-shop{
+    background-color: #1363DF;
+    color: #ffffff;
+    width: 150px;
+    height: 50px;
+    border: none;
+    border-radius: 5px;
+}
