@@ -102,11 +102,11 @@ app.post("/createuser/", async (req, res) => {
 // UPDATE USER
 app.patch("/updateuser/", (req, res) => {
   const { username } = req.query;
-  const { firstname, email, mobileNumber } = req.body;
+  const { fullname, email, mobileNumber } = req.body;
 
   connection.query(
-    "UPDATE user_details SET first_name=?, email=?, mobile=? WHERE username=?",
-    [firstname, email, mobileNumber, username],
+    "UPDATE user_details SET full_name=?, email=?, mobile=? WHERE username=?",
+    [fullname, email, mobileNumber, username],
     (error, results) => {
       if (error) {
         res.status(400);

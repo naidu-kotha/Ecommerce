@@ -4,9 +4,10 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from './components/Home';
+import NotFound from './components/NotFound'
 
 import Profile from "./components/Profile";
-// import MagazineForm from "./components/Magazine";
+//import MagazineForm from "./components/Magazine";
 import Cart from "./components/Cart";
 import Products from "./components/Products";
 import LoginPage from "./components/LoginPage";
@@ -83,6 +84,8 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/notfound" exact element={<NotFound />} />
+          
 
           {/* <SignUp />
       <Header />

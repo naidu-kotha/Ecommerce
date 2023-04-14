@@ -20,30 +20,37 @@ function Profile() {
 
   const userDetails = JSON.parse(Cookies.get("userDetails"));
   // console.log(userDetails);
-  const { username, first_name, email, mobile } = userDetails;
+  const { username, fullname, email, mobileNumber } = userDetails;
 
   const formikProfile = useFormik({
     initialValues: {
-      firstname: "",
+      fullname: "",
       mobileNumber: "",
       email: "",
     },
     onSubmit: (values) => {
       // console.log(values);
-      const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+      const userDetails = JSON.parse(Cookies.get("userDetails"));
       const { username } = userDetails;
       axios
         .patch("/updateuser/", formikProfile.values, {
           params: { username: `${username}` },
         })
         .then((response) => {
+          values.username = username;
+          console.log(values);
+          console.log(response);
+          Cookies.set("userDetails", JSON.stringify(formikProfile.values), {
+            expires: 30,
+          });
           formikProfile.resetForm();
           toast.success("Successfully updated");
+          toggleModal();
         });
     },
     validationSchema: Yup.object({
-      firstname: Yup.string()
-        .min(3, "First Name Should be at least 5 charactes")
+      fullname: Yup.string()
+        .min(3, "Fullname Should be at least 5 charactes")
         .required("Required*"),
       mobileNumber: Yup.string()
         .min(10, "needed 10 numbers")
@@ -105,12 +112,17 @@ function Profile() {
         <div className="profile-details">
           <div className="profile-heading-container">
             <h1 className="profile-heading">Account</h1>
-            <button className="edit-profile-btn" onClick={toggleModal}>
-              Edit Profile
-            </button>
-            <button className="edit-profile-btn" onClick={togglePasswordModal}>
-              Edit Password
-            </button>
+            <div>
+              <button className="edit-profile-btn" onClick={toggleModal}>
+                Edit Profile
+              </button>
+              <button
+                className="edit-profile-btn"
+                onClick={togglePasswordModal}
+              >
+                Edit Password
+              </button>
+            </div>
           </div>
           <hr className="h-line" />
           <div className="profile-details-container">
@@ -120,7 +132,7 @@ function Profile() {
             </div>
             <div className="details-container">
               <h1 className="user-details">Full name:</h1>
-              <h1 className="user-sub-details">{first_name}</h1>
+              <h1 className="user-sub-details">{fullname}</h1>
             </div>
             <div className="details-container">
               <h1 className="user-details">email:</h1>
@@ -128,7 +140,7 @@ function Profile() {
             </div>
             <div className="details-container">
               <h1 className="user-details">mobile:</h1>
-              <h1 className="user-sub-details">{mobile}</h1>
+              <h1 className="user-sub-details">{mobileNumber}</h1>
             </div>
           </div>
         </div>
@@ -136,16 +148,16 @@ function Profile() {
           <form className="p-form" onSubmit={formikProfile.handleSubmit}>
             <h1 className="p-profile_name">Profile</h1>
             <div className="p-inputs-align">
-              <p className="p-names">First Name</p>
+              <p className="p-names">Fullname</p>
               <input
-                {...formikProfile.getFieldProps("firstname")}
+                {...formikProfile.getFieldProps("fullname")}
                 className="p-input5"
                 type="text"
                 placeholder="Enter name"
               />
-              {formikProfile.touched.firstname &&
-              formikProfile.errors.firstname ? (
-                <div className="p-error">{formikProfile.errors.firstname}</div>
+              {formikProfile.touched.fullname &&
+              formikProfile.errors.fullname ? (
+                <div className="p-error">{formikProfile.errors.fullname}</div>
               ) : null}
             </div>
             <div className="p-inputs-align">
