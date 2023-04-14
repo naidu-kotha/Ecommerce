@@ -72,13 +72,13 @@ app.get("/getproducts/", (req, res) => {
 
 // CREATE USER
 app.post("/createuser/", async (req, res) => {
-  const { id, username, password } = req.body;
-  console.log(username, password);
+  const { id, username, password, role } = req.body;
+  console.log(username, password, role);
   const hashedPassword = await bcrypt.hash(password, 10);
   //   console.log(hashedPassword);
   connection.query(
-    "INSERT INTO user_details(id, username, password) values(?,?,?)",
-    [id, username, hashedPassword],
+    "INSERT INTO user_details(id, username, password, role) values(?,?,?,?)",
+    [id, username, hashedPassword, role],
     (error, results) => {
       if (error) {
         res.status(400);
@@ -103,7 +103,6 @@ app.post("/createuser/", async (req, res) => {
 app.patch("/updateuser/", (req, res) => {
   const { username } = req.query;
   const { fullname, email, mobile } = req.body;
-  console.log(username);
 
   connection.query(
     "UPDATE user_details SET fullname=?, email=?, mobile=? WHERE username=?",
@@ -242,27 +241,6 @@ app.get("/getitems/", (req, res) => {
     }
   );
 });
-
-// REMOVE ITEM FROM CART
-app.delete("/deleteitem/", (req, res) => {
-  const { id } = req.body;
-  const { username } = req.query;
-  console.log(id, username);
-
-  connection.query(
-    "DELETE FROM cart WHERE id=? AND username=?",
-    [id, username],
-    (error, results) => {
-      if (error) {
-        res.status(400).send(error);
-      } else {
-        const message = "Product successfully deleted";
-        res.send({ results, message }); 
-      }
-    }
-  );
-});
-
 
 // CREATE NEW ORDER
 app.post("/createorder/", (req, res) => {
