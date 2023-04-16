@@ -107,8 +107,9 @@ function Profile() {
   return (
     <>
       <ToastContainer />
-      <Header />
+
       <div className="p-margin">
+        <Header />
         <div className="profile-details">
           <div className="profile-heading-container">
             <h1 className="profile-heading">Account</h1>
@@ -144,65 +145,71 @@ function Profile() {
             </div>
           </div>
         </div>
-        <Modal isOpen={isModalOpen}>
-          <form className="p-form" onSubmit={formikProfile.handleSubmit}>
-            <h1 className="p-profile_name">Profile</h1>
-            <div className="p-inputs-align">
-              <p className="p-names">Fullname</p>
-              <input
-                {...formikProfile.getFieldProps("fullname")}
-                className="p-input5"
-                type="text"
-                placeholder="Enter name"
-              />
-              {formikProfile.touched.fullname &&
-              formikProfile.errors.fullname ? (
-                <div className="p-error">{formikProfile.errors.fullname}</div>
-              ) : null}
-            </div>
-            <div className="p-inputs-align">
-              <p className="p-names">Mobile Number</p>
-              <input
-                {...formikProfile.getFieldProps("mobile")}
-                className="p-input5 number-input"
-                type="number"
-                placeholder="Enter Mobile"
-              />
-              {formikProfile.touched.mobile && formikProfile.errors.mobile ? (
-                <div className="p-error">{formikProfile.errors.mobile}</div>
-              ) : null}
-            </div>
-            <div className="p-inputs-align">
-              <p className="p-names">Email</p>
-              <input
-                {...formikProfile.getFieldProps("email")}
-                className="p-input5"
-                type="email"
-                placeholder="Enter Email"
-              />
-              {formikProfile.touched.email && formikProfile.errors.email ? (
-                <div className="p-error">{formikProfile.errors.email}</div>
-              ) : null}
-            </div>
-
-            <hr />
-            <div className="p-left-align">
-              <div className="p-btn-align2">
-                <button
-                  className="p-buttons p-btn-cancel"
-                  type="button"
-                  onClick={toggleModal}
-                >
-                  cancel
-                </button>
-                <button className="p-buttons p-btn-save" type="submit">
-                  save
-                </button>
+        <div>
+          <Modal className="p-model-size" isOpen={isModalOpen}>
+            <form className="p-form" onSubmit={formikProfile.handleSubmit}>
+              <h1 className="p-profile_name">Profile</h1>
+              <div className="p-inputs-align">
+                <p className="p-names">Fullname</p>
+                <input
+                  {...formikProfile.getFieldProps("fullname")}
+                  className="p-input5"
+                  type="text"
+                  placeholder="Enter name"
+                />
+                {formikProfile.touched.fullname &&
+                formikProfile.errors.fullname ? (
+                  <div className="p-error">{formikProfile.errors.fullname}</div>
+                ) : null}
               </div>
-            </div>
-          </form>
-        </Modal>
-        <Modal isOpen={isPasswordModalOpen} className="modal-style">
+              <div className="p-inputs-align">
+                <p className="p-names">Mobile Number</p>
+                <input
+                  {...formikProfile.getFieldProps("mobile")}
+                  className="p-input5 number-input"
+                  type="number"
+                  placeholder="Enter Mobile"
+                />
+                {formikProfile.touched.mobile && formikProfile.errors.mobile ? (
+                  <div className="p-error">{formikProfile.errors.mobile}</div>
+                ) : null}
+              </div>
+              <div className="p-inputs-align">
+                <p className="p-names">Email</p>
+                <input
+                  {...formikProfile.getFieldProps("email")}
+                  className="p-input5"
+                  type="email"
+                  placeholder="Enter Email"
+                />
+                {formikProfile.touched.email && formikProfile.errors.email ? (
+                  <div className="p-error">{formikProfile.errors.email}</div>
+                ) : null}
+              </div>
+
+              <hr />
+              <div className="p-left-align">
+                <div className="p-btn-align2">
+                  <button
+                    className="p-buttons p-btn-cancel"
+                    type="button"
+                    onClick={toggleModal}
+                  >
+                    cancel
+                  </button>
+                  <button className="p-buttons p-btn-save" type="submit">
+                    save
+                  </button>
+                </div>
+              </div>
+            </form>
+          </Modal>
+        </div>
+
+        <Modal
+          isOpen={isPasswordModalOpen}
+          className="modal-style p-model-size"
+        >
           <div className="c-margin">
             <div className="c-aligning">
               {/* <h1 className="c-profile_name">Change Password</h1> */}
@@ -319,7 +326,6 @@ function Profile() {
           </div>
         </Modal>
       </div>
-      xx
     </>
   );
 }
