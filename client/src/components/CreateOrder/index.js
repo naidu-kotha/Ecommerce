@@ -9,8 +9,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Header from "../Header";
 import { states, numberOptions } from "../constants";
-import CartContext from "../../context/CartContext";
 import "./index.css";
+import { toast, ToastContainer } from "react-toastify";
 
 function CreateOrder() {
   const [selectedState, setSelectedState] = useState("");
@@ -20,7 +20,6 @@ function CreateOrder() {
 
   const [productsList, setProductsList] = useState([]);
   const [itemsList, setItemsList] = useState([]);
-  const { addItemToCart } = useContext(CartContext);
   const [stateError, setStateError] = useState("");
   const [categoryError, setCategoryError] = useState("");
   const [itemError, setItemError] = useState("");
@@ -138,9 +137,16 @@ function CreateOrder() {
       formikValues.deliveryDate = deliveryDate;
       // console.log(formikValues);
 
-      await axios.post("/createorder/", formikValues).then((respone) => {
-        console.log(respone);
-      });
+      await axios
+        .post("/createorder/", formikValues)
+        .then((respone) => {
+          console.log(respone);
+          toast.success(respone.data);
+          formikMagzine.resetForm();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     }
   };
 
@@ -172,6 +178,7 @@ function CreateOrder() {
   return (
     <>
       <Header />
+      <ToastContainer />
       <div className="bg-container">
         <h1 className="m-heading">Create Your Order</h1>
         <div className="page-align">
@@ -324,7 +331,7 @@ function CreateOrder() {
               </div>
             </div>
             <div className="btn-submit-align">
-              <button type="submit" className="button-submit btn-save">
+              <button type="submit" className="btn-save">
                 Create Order
               </button>
             </div>

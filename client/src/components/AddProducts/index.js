@@ -5,10 +5,14 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { v4 } from "uuid";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ToastContainer, toast } from "react-toastify";
 import Select from "react-select";
 import "./index.css";
+import axios from "axios";
+
 const intialImage =
   "https://w7.pngwing.com/pngs/88/823/png-transparent-logo-product-design-brand-trademark-new-product-promotion-blue-text-trademark-thumbnail.png";
+
 const categoryList = [
   {
     label: "clothes",
@@ -31,35 +35,67 @@ const categoryList = [
     value: "toys",
   },
 ];
+
 function AddProducts() {
-  const [selectedCategory, setCategory] = useState([]);
+  const [selectedCategory, setCategory] = useState("");
   const [image, setImage] = useState(null);
   const [url, setUrl] = useState(intialImage);
-  const [errorMsg, setErrorMsg] = useState("");
+  const [categoryError, setCategoryError] = useState("");
+  const [imageError, setImageError] = useState("");
 
   const formikAddProduct = useFormik({
     initialValues: {
       title: "",
-      imgUrl: "",
       price: "",
       brand: "",
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Required*"),
       brand: Yup.string().required("Required*"),
-      price: Yup.string()
-        //.matches('/^(\$)?(\d{1,3}(,\d{3})*|(\d+))(\.\d{2})?$/',"price needed numbers only")
-        .required("Required*"),
+      price: Yup.string().required("Required*"),
     }),
+    onSubmit: (values) => {
+      if (selectedCategory === "") {
+        setCategoryError("Required*");
+      } else {
+        setCategoryError("");
+      }
+      if (url === intialImage) {
+        setImageError("Upload product image");
+      } else {
+        setImageError("");
+      }
+      if (selectedCategory && url !== intialImage) {
+        values.imageUrl = url;
+        values.category = selectedCategory;
+        console.log(values);
+        axios
+          .post("/addproduct/", values)
+          .then((response) => {
+            console.log(response);
+            toast.success(response.data.message);
+            formikAddProduct.resetForm();
+          })
+          .catch((e) => {
+            console.log(e);
+            if (e.response.data.errno === 1062) {
+              toast.error("Product Already Exists");
+            }
+          });
+        setImage(null);
+        setUrl(intialImage);
+      }
+    },
   });
 
   const handleImageChange = (e) => {
-    if (e.target.files[0]) {
+    if (e.target.files[0] !== "") {
       setImage(e.target.files[0]);
     }
   };
   const handlesubmit = () => {
     const imageRef = ref(storage, "image" + v4());
+    console.log(imageRef);
     uploadBytes(imageRef, image)
       .then(() => {
         getDownloadURL(imageRef)
@@ -68,7 +104,7 @@ function AddProducts() {
             setUrl(url);
           })
           .catch((error) => {
-            console.log(error.message, "eroor getting the url");
+            console.log(error.message, "error getting the url");
           });
         setImage(null);
       })
@@ -80,6 +116,7 @@ function AddProducts() {
   return (
     <>
       <Header />
+      <ToastContainer />
       <div className="add-product-bg-container-total">
         <div className="add-products-img-align">
           <form
@@ -97,7 +134,7 @@ function AddProducts() {
                   placeholder={<div>Select required category</div>}
                   onChange={(option) => setCategory(option.value)}
                 />
-                {/* {selectedCategory === undefined ? "Please select catagary":""} */}
+                {setCategoryError && <p className="m-error">{categoryError}</p>}
               </div>
               <div>
                 <label className="add-product-label" htmlFor="title">
@@ -122,9 +159,9 @@ function AddProducts() {
                 <br />
                 <input
                   {...formikAddProduct.getFieldProps("price")}
-                  className="add-product-input"
+                  className="add-product-input number-input"
                   id="price"
-                  type="number number-input"
+                  type="number"
                 />
 
                 {formikAddProduct.touched.price &&
@@ -156,17 +193,14 @@ function AddProducts() {
           </form>
         </div>
         <div className="add-product-img-container">
-          <img
-            className="add-product-img-size"
-            src={url}
-            alt="uploaded image"
-          />
+          <img className="add-product-img-size" src={url} alt="uploaded img" />
           <div className="add-product-uploadImage-container">
             <input
               className="add-product-choose-file"
               type="file"
               onChange={handleImageChange}
             />
+            {imageError && <p className="m-error">{imageError}</p>}
             <button
               className="add-product-submit-button"
               onClick={handlesubmit}

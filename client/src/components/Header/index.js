@@ -36,7 +36,7 @@ function Header() {
                   <Nav.Link className="h-routes" href="/addproducts">
                     Add Products
                   </Nav.Link>
-                  <Nav.Link className="h-routes" href="/cart">
+                  <Nav.Link className="h-routes" href="/allorders">
                     View Orders
                   </Nav.Link>
                 </>
@@ -47,6 +47,9 @@ function Header() {
                   </Nav.Link>
                   <Nav.Link className="h-routes" href="/createorder">
                     Create Order
+                  </Nav.Link>
+                  <Nav.Link className="h-routes" href="/vieworders">
+                    My Orders
                   </Nav.Link>
                   <Nav.Link className="h-routes" href="/cart">
                     Cart
@@ -65,9 +68,7 @@ function Header() {
       </Container>
     </Navbar>
   );
-  
 
-  
   return navbar;
 }
 

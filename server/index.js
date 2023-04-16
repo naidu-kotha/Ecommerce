@@ -205,6 +205,24 @@ app.post("/login/", (req, res) => {
   );
 });
 
+// ADD NEW PRODUCT TO TABLE
+app.post("/addproduct/", (req, res) => {
+  const { title, category, imageUrl, price, brand } = req.body;
+
+  connection.query(
+    "INSERT INTO products (title, category, image_url, price, brand) VALUES (?, ?, ?, ?, ?)",
+    [title, category, imageUrl, price, brand],
+    (error, results) => {
+      if (error) {
+        res.status(400).send(error);
+        return;
+      }
+      const message = "Product added successfully";
+      res.send({ results, message });
+    }
+  );
+});
+
 // ADD TO CART
 app.post("/addtocart/", (req, res) => {
   // const { username } = req.query;
@@ -228,7 +246,7 @@ app.post("/addtocart/", (req, res) => {
 // GET PRODUCTS FROM CART
 app.get("/getitems/", (req, res) => {
   const { username } = req.query;
-  console.log(username);
+  // console.log(username);
   connection.query(
     `SELECT * FROM cart WHERE username='${username}'`,
     (error, results) => {
@@ -255,6 +273,7 @@ app.post("/createorder/", (req, res) => {
     address,
     postalCode,
     state,
+    quantity,
     deliveryDate,
   } = req.body;
 
@@ -262,29 +281,75 @@ app.post("/createorder/", (req, res) => {
   console.log(date.toLocaleDateString("en-GB"));
 
   connection.query(
-    "INSERT INTO orders(id, username, category, title, fullname, email, mobile, address, pincode, state, delivery_date) VALUES(?,?,?,?,?,?,?,?,?,?,?)",
-    [
-      id,
-      username,
-      category,
-      title,
-      fullname,
-      email,
-      mobileNumber,
-      address,
-      postalCode,
-      state,
-      date,
-    ],
+    "SELECT image_url, price FROM products WHERE title=?",
+    [title],
     (error, results) => {
+      if (error) {
+        res.send(error).status(400);
+        return;
+      }
+      // console.log(results);
+      const { image_url, price } = results[0];
+
+      // console.log(image_url);
+
+      connection.query(
+        "INSERT INTO orders(id, username, category, title, image_url, price, fullname, email, mobile, address, pincode, state, quantity, delivery_date) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        [
+          id,
+          username,
+          category,
+          title,
+          image_url,
+          price,
+          fullname,
+          email,
+          mobileNumber,
+          address,
+          postalCode,
+          state,
+          quantity,
+          date,
+        ],
+        (error, results) => {
+          if (error) {
+            res.status(400).send(error);
+            return;
+          }
+          // console.log(results);
+          res.send("Order successfully created");
+        }
+      );
+    }
+  );
+});
+
+// GET ORDERS
+app.get("/getorders/", (req, res) => {
+  const { username } = req.query;
+
+  if (username) {
+    connection.query(
+      `SELECT * FROM orders WHERE username='${username}'`,
+      (error, results) => {
+        if (error) {
+          res.status(400).send(error);
+          return;
+        }
+        console.log(results);
+        res.send(results);
+      }
+    );
+  } else {
+    connection.query("SELECT * FROM orders", (error, results) => {
       if (error) {
         res.status(400).send(error);
         return;
       }
-      // console.log(results);
-      res.send("Order successfully created");
-    }
-  );
+      console.log(results);
+      res.send(results);
+    });
+  }
 });
 
 // REMOVE ITEM FROM CART
@@ -293,18 +358,29 @@ app.delete("/deleteitem/", (req, res) => {
   const { username } = req.query;
   console.log(id, username);
 
-  connection.query(
-    "DELETE FROM cart WHERE id=? AND username=?",
-    [id, username],
-    (error, results) => {
+  let query = "";
+
+  if (id) {
+    query = "DELETE FROM cart WHERE id=? AND username=?";
+    connection.query(query, [id, username], (error, results) => {
       if (error) {
         res.status(400).send(error);
       } else {
         const message = "Product successfully deleted";
         res.send({ results, message });
       }
-    }
-  );
+    });
+  } else {
+    query = "DELETE FROM cart WHERE username=?";
+    connection.query(query, [username], (error, results) => {
+      if (error) {
+        res.status(400).send(error);
+      } else {
+        const message = "All products for the user successfully deleted";
+        res.send({ results, message });
+      }
+    });
+  }
 });
 
 app.listen(5000, () => {

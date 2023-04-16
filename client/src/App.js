@@ -13,7 +13,9 @@ import Cart from "./components/Cart";
 import Products from "./components/Products";
 import LoginPage from "./components/LoginPage";
 import Signup from "./components/Signup";
+import UserOrders from "./components/UserOrders";
 import CartContext from "./context/CartContext";
+import AllOrders from "./components/AllOrders";
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
@@ -104,11 +106,29 @@ function App() {
             }
           />
           <Route
+            path="/allorders"
+            exact
+            element={
+              <AdminProtectedRoute>
+                <AllOrders />
+              </AdminProtectedRoute>
+            }
+          />
+          <Route
             path="/createorder"
             exact
             element={
               <ProtectedRoute>
                 <CreateOrder />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/vieworders"
+            exact
+            element={
+              <ProtectedRoute>
+                <UserOrders />
               </ProtectedRoute>
             }
           />
