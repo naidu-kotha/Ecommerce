@@ -1,40 +1,38 @@
 .input-sizes{
     width: 100%;
-    height: 50px;
+    height: 40px;
     background-color: transparent;
-    border: solid 1px grey;
-    border-radius: 10px;
-
-    
+    border: solid 1px #cccccc;
+    border-radius: 10px; 
 }
+
 .magazine-container {
     display: flex;
     flex-wrap: wrap;
-    min-width: 100%;
-    padding-left: 250px;
+    padding: 20px 40px;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
 }
 
 .street-align{
     display: flex;
     flex-direction: column;
-    width: 84%;
-    margin: 0 80px 0 0;
+    width: 65%;
 }
+
 .m-heading{
     color: black;
     font-family: "roboto";
     font-weight: 500;
     font-size: 35px;
     text-align: center;
-
-
 }
 
 .magazine-input-container {
     display: flex;
     flex-direction: column;
-    width: 40%;
-    margin: 0 80px 0 0;
+    width: 30%;
 }
 
 .number-input::-webkit-outer-spin-button,
@@ -42,6 +40,7 @@
   -webkit-appearance: none;
   margin: 0;
 }
+
 .button-submit{
     color: black;
     border-width: 0px;
@@ -50,8 +49,9 @@
     border-radius: 10px;
     font-size: 20px;
     align-items: end;
-    
+
 }
+
 .bg-container{
     min-width: 100%;
 }
@@ -62,8 +62,8 @@
     font-weight: 500;
     font-size: 50px;
     margin-left: 200px;
-
 }
+
 .page-align{
     min-width: 100%;
     display: flex;
@@ -71,6 +71,7 @@
     justify-content: center;
     align-items: center;
 }
+
 .btn-save{
     background:rgb(63, 139, 231);
     font-size: 30px;
@@ -79,15 +80,19 @@
     margin: 20px;
     margin-right: 200px;
 }
+
 .m-error{
     color: red;
     font-family: 'roboto';
     font-size: 15px;
 }
+
 .name-heading{
-    font-size: 25px;
-    margin-top: 5px;
+    font-size: 16px;
+    margin: 0;
+    margin-bottom: 4px;
 }
+
 .btn-submit-align{
     margin-top: 20px;
     min-width: 100%;
@@ -96,10 +101,38 @@
     justify-content: center;
     align-items: center;
 }
+
 .set-up{
     width: 100%;
     height: 50px;
     background-color: transparent;
     border: none;
     border-radius: 15px;
+}
+
+.order-category-select {
+    width: 300px; 
+    margin-bottom: 16px;
+}
+
+.order-qty-select { 
+    width: 200px;  
+    margin-bottom: 16px; 
+}
+
+.react-select-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.date-picker{
+    border: none;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    height: 36px;
+    margin-bottom: 16px;
+    width: 200px;
 }

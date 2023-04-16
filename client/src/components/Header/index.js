@@ -45,6 +45,9 @@ function Header() {
                   <Nav.Link className="h-routes" href="/products">
                     Products
                   </Nav.Link>
+                  <Nav.Link className="h-routes" href="/createorder">
+                    Create Order
+                  </Nav.Link>
                   <Nav.Link className="h-routes" href="/cart">
                     Cart
                   </Nav.Link>

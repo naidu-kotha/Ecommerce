@@ -246,37 +246,63 @@ app.get("/getitems/", (req, res) => {
 app.post("/createorder/", (req, res) => {
   const {
     id,
+    username,
     category,
-    item,
-    firstname,
-    lastname,
+    title,
+    fullname,
     email,
-    mobile_no,
+    mobileNumber,
     address,
-    pincode,
+    postalCode,
     state,
+    deliveryDate,
   } = req.body;
 
+  const date = new Date(deliveryDate);
+  console.log(date.toLocaleDateString("en-GB"));
+
   connection.query(
-    "INSERT INTO orders(id, category, item, firstname, lastname, email, mobile_no, address, pincode, state) VALUES(?,?,?,?,?,?,?,?,?,?)",
+    "INSERT INTO orders(id, username, category, title, fullname, email, mobile, address, pincode, state, delivery_date) VALUES(?,?,?,?,?,?,?,?,?,?,?)",
     [
       id,
+      username,
       category,
-      item,
-      firstname,
-      lastname,
+      title,
+      fullname,
       email,
-      mobile_no,
+      mobileNumber,
       address,
-      pincode,
+      postalCode,
       state,
+      date,
     ],
     (error, results) => {
       if (error) {
         res.status(400).send(error);
         return;
       }
+      // console.log(results);
       res.send("Order successfully created");
+    }
+  );
+});
+
+// REMOVE ITEM FROM CART
+app.delete("/deleteitem/", (req, res) => {
+  const { id } = req.body;
+  const { username } = req.query;
+  console.log(id, username);
+
+  connection.query(
+    "DELETE FROM cart WHERE id=? AND username=?",
+    [id, username],
+    (error, results) => {
+      if (error) {
+        res.status(400).send(error);
+      } else {
+        const message = "Product successfully deleted";
+        res.send({ results, message });
+      }
     }
   );
 });

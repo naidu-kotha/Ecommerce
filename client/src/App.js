@@ -6,7 +6,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
 import Home from "./components/Home";
 import NotFound from "./components/NotFound";
-
+import CreateOrder from "./components/CreateOrder";
 import Profile from "./components/Profile";
 import AddProducts from "./components/AddProducts";
 import Cart from "./components/Cart";
@@ -101,6 +101,15 @@ function App() {
               <AdminProtectedRoute>
                 <AddProducts />
               </AdminProtectedRoute>
+            }
+          />
+          <Route
+            path="/createorder"
+            exact
+            element={
+              <ProtectedRoute>
+                <CreateOrder />
+              </ProtectedRoute>
             }
           />
           <Route path="*" element={<NotFound />} />
