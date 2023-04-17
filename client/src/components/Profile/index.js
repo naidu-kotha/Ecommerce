@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Modal from "react-modal";
@@ -21,6 +22,20 @@ function Profile() {
   const userDetails = JSON.parse(Cookies.get("userDetails"));
   // console.log(userDetails);
   const { username, fullname, email, mobile } = userDetails;
+
+  const customStyles = {
+    content: {
+      width: "50%",
+      margin: "auto",
+      // display: "flex",
+      // justifyContent: "center",
+      // alignItems: "center",
+      height: "100vh",
+      overflow: "hidden",
+    },
+  };
+
+  const navigate = useNavigate();
 
   const formikProfile = useFormik({
     initialValues: {
@@ -69,6 +84,25 @@ function Profile() {
       newPassword: "",
       reEnterNewPassword: "",
     },
+    onSubmit: (values) => {
+      console.log(values);
+      axios
+        .patch("/changepassword/", formikPassword.values, {
+          params: { username: `${username}` },
+        })
+        .then((response) => {
+          console.log(response);
+          toast.success("Password changed");
+          Cookies.remove("jwt_token");
+          Cookies.remove("userDetails");
+          Cookies.remove("role");
+          navigate("/login", { replace: true });
+        })
+        .catch((e) => {
+          console.log(e);
+          toast.warning("Unable to change password");
+        });
+    },
     validationSchema: Yup.object({
       currentPassword: Yup.string()
         .min(8, "password should be at least 8 characters long.")
@@ -110,43 +144,46 @@ function Profile() {
 
       <div className="p-margin">
         <Header />
-        <div className="profile-details">
-          <div className="profile-heading-container">
-            <h1 className="profile-heading">Account</h1>
+        <div className="profile-card-align-middle">
+          <div className="profile-card-container">
             <div>
-              <button className="edit-profile-btn" onClick={toggleModal}>
-                Edit Profile
+              <p className="profile-name-headings">
+                username: <span className="profile-inputs">{username}</span>
+              </p>
+              <p className="profile-name-headings">
+                fullname: <span className="profile-inputs">{fullname}</span>
+              </p>
+              <p className="profile-name-headings">
+                email:
+                <span className="profile-inputs">{email}</span>
+              </p>
+              <p className="profile-name-headings">
+                number: <spam className="profile-inputs">{mobile}</spam>
+              </p>
+            </div>
+
+            <div className="profile-butoons-container">
+              <button
+                onClick={toggleModal}
+                className="profile-edit-profile-button"
+              >
+                Edit profile
               </button>
               <button
-                className="edit-profile-btn"
                 onClick={togglePasswordModal}
+                className="profile-edit-password-button"
               >
-                Edit Password
+                Edit password
               </button>
-            </div>
-          </div>
-          <hr className="h-line" />
-          <div className="profile-details-container">
-            <div className="details-container">
-              <h1 className="user-details">Username:</h1>
-              <h1 className="user-sub-details">{username}</h1>
-            </div>
-            <div className="details-container">
-              <h1 className="user-details">Full name:</h1>
-              <h1 className="user-sub-details">{fullname}</h1>
-            </div>
-            <div className="details-container">
-              <h1 className="user-details">email:</h1>
-              <h1 className="user-sub-details">{email}</h1>
-            </div>
-            <div className="details-container">
-              <h1 className="user-details">mobile:</h1>
-              <h1 className="user-sub-details">{mobile}</h1>
             </div>
           </div>
         </div>
         <div>
-          <Modal className="p-model-size" isOpen={isModalOpen}>
+          <Modal
+            style={customStyles}
+            className="p-model-size"
+            isOpen={isModalOpen}
+          >
             <form className="p-form" onSubmit={formikProfile.handleSubmit}>
               <h1 className="p-profile_name">Profile</h1>
               <div className="p-inputs-align">

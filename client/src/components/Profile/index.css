@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    background-color: rgb(243, 137, 62);
+    background-color: rgb(255, 252, 251);
     background-size: cover;
     height: 100vh;
 
@@ -65,8 +65,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 100vh;
+    /* width: 100%;
+    height: 100vh; */
     background-color: #ffffff;
 
  }
@@ -154,7 +154,7 @@
 
 .user-details {
     font-family: "Roboto";
-    font-size: 32px;
+    font-size: 18px;
     color: #fff;
     padding-right: 15px;
 }
@@ -179,14 +179,14 @@
 .c-names{
     color:#ffffff;
     font-family: "roboto";
-    font-size: 30px;
+    font-size: 18px;
 }
 .c-input1{
-    padding-left: 30px;
-    height: 50px;
+    padding-left: 5px;
+    height: 40px;
     border:none;
     border-width: 2px;
-    font-size: 20px;
+    font-size: 14px;
     width: 100%;
     background-color:#ffffff;
     border-radius: 8px;
@@ -290,4 +290,80 @@
     color: #0b0a0a;
     padding: 0;
     padding-right: 10px;
+}
+.profile-top-icon{
+    width: 150px;
+    height: 150px;
+    border-radius: 80px;
+  
+}
+.profile-inputs{
+    font-size: 24px;
+    font-family: "roboto";
+    font-weight: 300;
+    margin-left: 20px;
+
+}
+.profile-name-headings{
+    color: rgb(39, 15, 15);
+    font-size: 24px;
+    font-family: "roboto";
+
+}
+
+.profile-card-align-middle{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    border: solid 1px darkgray;
+    border-radius: 25px;
+     
+}
+.profile-card-container{
+    border: solid 1px darkgray;
+    border-radius: 25px;
+     padding: 50px;
+     width: 500px;
+     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    
+}
+.profile-edit-profile-button{
+    width: 100px;
+    background-color: cornflowerblue;
+    padding: 8px;
+    color: #ffffff;
+    font-weight: 500;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    margin-right: 20px;
+}
+.profile-edit-password-button{
+    width: 120px;
+    background-color: rgb(8, 8, 155);
+    padding: 8px;
+    color: #ffffff;
+    font-weight: 500;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+}
+.profile-img-icon-background-container{
+    height:250px ;
+    background-color: rgb(8, 8, 155);
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+.profile-butoons-container{
+    margin: 15px;
 }

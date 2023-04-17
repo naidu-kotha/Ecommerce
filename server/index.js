@@ -119,9 +119,10 @@ app.patch("/updateuser/", (req, res) => {
 });
 
 // UPDATE PASSWORD
-app.patch("/changepassword/:username/", (req, res) => {
-  const { username } = req.params;
+app.patch("/changepassword/", (req, res) => {
+  const { username } = req.query;
   const { oldPassword, password } = req.body;
+  console.log(oldPassword, password, username);
   connection.query(
     "SELECT * FROM user_details WHERE username=?",
     [username],
