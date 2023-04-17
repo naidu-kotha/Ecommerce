@@ -87,7 +87,7 @@ function SignUp() {
         .required("Required*"),
       mobile: Yup.string()
         .min(10, "needed 10 numbers")
-        .matches("^[6789][0-9]{9}$", "needed numbers only")
+        .matches("^[6789][0-9]{9}$", "numbers only")
         .required("Required*"),
       email: Yup.string()
         .email("invalid email id")
