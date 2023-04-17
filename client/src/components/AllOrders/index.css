@@ -51,9 +51,10 @@
 
 .all-orders-details-container {
     display: flex;
+    flex-direction: column;
     /* justify-content: space-evenly; */
-    flex-wrap: wrap;
-    margin-top: 30px;
+    /* flex-wrap: wrap; */
+    /* margin-top: 30px; */
 }
 
 .all-orders-details {

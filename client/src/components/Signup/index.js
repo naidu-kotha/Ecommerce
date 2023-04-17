@@ -91,7 +91,10 @@ function SignUp() {
         .required("Required*"),
       email: Yup.string()
         .email("invalid email id")
-        .matches("^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")
+        .matches(
+          "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$",
+          "Invalid Email"
+        )
         .required("Required*"),
     }),
   });
@@ -103,6 +106,7 @@ function SignUp() {
     console.log(event);
     selectRole(event.value);
   };
+  console.log(formik.errors);
 
   return (
     <div className="align-left">

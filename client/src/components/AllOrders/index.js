@@ -2,10 +2,13 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import Header from "../Header";
 import "./index.css";
+import { Modal, ModalBody, ModalHeader } from "react-bootstrap";
 
 function UserOrders() {
   const [ordersList, setOrdersList] = useState([]);
   const [showAddress, setShowAddress] = useState(false);
+
+  // setShowAddress((prevState) => !prevState);
 
   useEffect(() => {
     axios
@@ -27,21 +30,48 @@ function UserOrders() {
       return order;
     });
     setOrdersList(updatedOrdersList);
-    setShowAddress((prevState) => !prevState);
+    setShowAddress(true);
+    // {setShowAddress && du}
   };
 
   const displayAddressDetails = (each) => {
     if (each.showAddressDetails) {
       return (
-        <div className="all-orders-details-container">
-          <p className="all-orders-details">Username: {each.username}</p>
-          <p className="all-orders-details">Fullname: {each.fullname}</p>
-          <p className="all-orders-details">Address: {each.address}</p>
-          <p className="all-orders-details">Mobile: {each.mobile}</p>
-          <p className="all-orders-details">Email: {each.email}</p>
-          <p className="all-orders-details">State: {each.state}</p>
-          <p className="all-orders-details">Pincode: {each.pincode}</p>
-        </div>
+        <Modal
+          size="xs"
+          show={showAddress}
+          onHide={() => setShowAddress(false)}
+        >
+          <ModalHeader closeButton>
+            Address
+            {/* <button onClick={() => setShowAddress(!showAddress)}>X</button> */}
+          </ModalHeader>
+          <ModalBody>
+            <div className="all-orders-details-container">
+              <p className="all-orders-details">
+                <b>Username:</b> {each.username}
+              </p>
+              <p className="all-orders-details">
+                <b>Fullname:</b> {each.fullname}
+              </p>
+              <p className="all-orders-details">
+                <b>Address:</b> {each.address}
+              </p>
+              <p className="all-orders-details">
+                <b>Mobile:</b> {each.mobile}
+              </p>
+              <p className="all-orders-details">
+                <b>Email:</b> {each.email}
+              </p>
+              <p className="all-orders-details">
+                <b>State:</b> {each.state}
+              </p>
+              <p className="all-orders-details">
+                <b>Pincode:</b> {each.pincode}
+              </p>
+            </div>
+          </ModalBody>
+        </Modal>
       );
     }
   };
@@ -73,12 +103,10 @@ function UserOrders() {
                   className="address-button"
                   onClick={() => toggleAddressDetails(each.id)}
                 >
-                  {showAddress
-                    ? "Hide Address Details"
-                    : "Show Address Details"}
+                  Show Address Details
                 </button>
               </div>
-              {showAddress && displayAddressDetails(each)}
+              {displayAddressDetails(each)}
             </div>
           </div>
         ))}

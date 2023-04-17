@@ -2,9 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Select from "react-select";
 import Header from "../Header";
-import {categoryList,numberOptions} from "../constants.js"
+import { categoryList, numberOptions } from "../constants.js";
 import CartContext from "../../context/CartContext";
 import "./index.css";
+import Cookies from "js-cookie";
 
 function Products() {
   const [productsList, setProductsList] = useState([]);
@@ -19,11 +20,19 @@ function Products() {
   //   addItemToCart(item, quantity);
   // };
 
+  const jwtToken = Cookies.get("jwt_token");
+  // console.log(jwtToken);
+
   useEffect(() => {
     const category = selectedCategory;
 
     axios
-      .get("/getproducts", { params: { category: `${category}` } })
+      .get("/getproducts", {
+        params: { category: `${category}` },
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      })
       .then((response) => {
         if (response.statusText === "OK") {
           const updatedProductsData = response.data.map((each) => ({
@@ -39,7 +48,6 @@ function Products() {
       });
   }, [selectedCategory]);
 
-  
   return (
     <>
       <Header />

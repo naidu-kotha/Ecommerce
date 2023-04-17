@@ -22,7 +22,8 @@ dbConnection();
 
 // MIDDLEWARE AUTHENTICATION
 const tokenAuthentication = (req, res, next) => {
-  const authHeader = req.headers["authorization"];
+  const authHeader = req.headers.authorization;
+  console.log(authHeader);
 
   if (authHeader === undefined) {
     res.status(401).send("Access denied. No token provided.");
@@ -32,7 +33,7 @@ const tokenAuthentication = (req, res, next) => {
       if (error) {
         res.status(401).send(error);
       } else {
-        req.username = payload.username;
+        // req.username = payload.username;
         next();
       }
     });
@@ -100,7 +101,7 @@ app.post("/createuser/", async (req, res) => {
 });
 
 // UPDATE USER
-app.patch("/updateuser/", (req, res) => {
+app.patch("/updateuser/", tokenAuthentication, (req, res) => {
   const { username } = req.query;
   const { fullname, email, mobile } = req.body;
 
@@ -119,7 +120,7 @@ app.patch("/updateuser/", (req, res) => {
 });
 
 // UPDATE PASSWORD
-app.patch("/changepassword/", (req, res) => {
+app.patch("/changepassword/", tokenAuthentication, (req, res) => {
   const { username } = req.query;
   const { currentPassword, newPassword } = req.body;
   console.log(currentPassword, newPassword, username);
@@ -229,7 +230,7 @@ app.post("/addproduct/", (req, res) => {
 });
 
 // ADD TO CART
-app.post("/addtocart/", (req, res) => {
+app.post("/addtocart/", tokenAuthentication, (req, res) => {
   // const { username } = req.query;
   const { item, quantity, username } = req.body;
   const { id, category, title, imageUrl, brand, price } = item;

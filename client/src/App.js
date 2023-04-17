@@ -20,6 +20,8 @@ import AllOrders from "./components/AllOrders";
 function App() {
   const [cartItems, setCartItems] = useState([]);
 
+  const jwtToken = Cookies.get("jwt_token");
+
   const addItemToCart = (item, quantity) => {
     const userDetails = JSON.parse(Cookies.get("userDetails"));
     const { username } = userDetails;
@@ -27,7 +29,15 @@ function App() {
     console.log(quantity);
 
     axios
-      .post("/addtocart", { item, quantity, username })
+      .post(
+        "/addtocart",
+        { item, quantity, username },
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      )
       .then((response) => {
         console.log(response);
         setCartItems([]);
