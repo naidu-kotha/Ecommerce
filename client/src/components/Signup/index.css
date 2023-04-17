@@ -1,6 +1,6 @@
 .s-input-container {
     width: 300px;
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
 }
 
 .s-input2{
@@ -9,7 +9,7 @@
     border: solid 1px grey;
     border: none;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 14px;
     outline: none;
 }
 
@@ -17,7 +17,9 @@
     font-size: 14px;
     font-family: 'roboto';
     color: #ffffff;
-    padding-bottom: 4px;
+    /* padding-bottom: 4px; */
+    margin: 0;
+    margin-top: 10px;
 }
 
 .s-align-name{
@@ -72,7 +74,7 @@
 .s-error{
     color: red;
     font-family: 'roboto';
-    font-size: 15px;
+    font-size: 12px;
     padding-top: 5px;
 }
 

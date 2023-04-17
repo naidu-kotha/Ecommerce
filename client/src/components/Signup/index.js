@@ -36,6 +36,9 @@ function SignUp() {
       id: "",
       username: "",
       password: "",
+      fullname: "",
+      mobile: "",
+      email: "",
     },
     onSubmit: (values) => {
       const id = uuidv4();
@@ -79,6 +82,17 @@ function SignUp() {
           "needed one (upperCase,lowercase,symbol)"
         )
         .required("Required*"),
+      fullname: Yup.string()
+        .min(3, "Fullname Should be at least 5 charactes")
+        .required("Required*"),
+      mobile: Yup.string()
+        .min(10, "needed 10 numbers")
+        .matches("^[6789][0-9]{9}$", "needed numbers only")
+        .required("Required*"),
+      email: Yup.string()
+        .email("invalid email id")
+        .matches("^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")
+        .required("Required*"),
     }),
   });
   const togglePasswordVisibility = () => {
@@ -97,25 +111,27 @@ function SignUp() {
           <h1 className="s-sign">Sign Up</h1>
           <form onSubmit={formik.handleSubmit}>
             <div className="s-input-container">
-              <label className="s-disc">USERNAME*</label>
+              <label className="s-disc">Username*</label>
               <br />
               <input
                 {...formik.getFieldProps("username")}
                 className="s-input2"
                 type="text"
+                placeholder="Username"
               />
               {formik.touched.username && formik.errors.username ? (
                 <div className="s-error">{formik.errors.username}</div>
               ) : null}
             </div>
             <div className="s-input-container">
-              <label className="s-disc">PASSWORD*</label>
+              <label className="s-disc">Password*</label>
               <div className="s-container-visible">
                 <br />
                 <input
                   {...formik.getFieldProps("password")}
                   className="s-input2 s-password-symbol"
                   type={showPassword ? "text" : "password"}
+                  placeholder="Password"
                 />
                 <span>
                   <button
@@ -132,8 +148,44 @@ function SignUp() {
               ) : null}
             </div>
             <div className="s-input-container">
+              <p className="s-disc">Fullname</p>
+              <input
+                {...formik.getFieldProps("fullname")}
+                className="s-input2 s-password-symbol"
+                type="text"
+                placeholder="Enter name"
+              />
+              {formik.touched.fullname && formik.errors.fullname ? (
+                <div className="p-error">{formik.errors.fullname}</div>
+              ) : null}
+            </div>
+            <div className="s-input-container">
+              <p className="s-disc">Mobile Number</p>
+              <input
+                {...formik.getFieldProps("mobile")}
+                className="s-input2 s-password-symbol number-input"
+                type="number"
+                placeholder="Enter Mobile"
+              />
+              {formik.touched.mobile && formik.errors.mobile ? (
+                <div className="p-error">{formik.errors.mobile}</div>
+              ) : null}
+            </div>
+            <div className="s-input-container">
+              <p className="s-disc">Email</p>
+              <input
+                {...formik.getFieldProps("email")}
+                className="s-input2 s-password-symbol"
+                type="email"
+                placeholder="Enter Email"
+              />
+              {formik.touched.email && formik.errors.email ? (
+                <div className="p-error">{formik.errors.email}</div>
+              ) : null}
+            </div>
+            <div className="s-input-container">
               <label htmlFor="role" className="s-disc">
-                ROLE*
+                Role*
               </label>
               <Select
                 id="role"

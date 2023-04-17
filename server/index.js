@@ -72,13 +72,13 @@ app.get("/getproducts/", (req, res) => {
 
 // CREATE USER
 app.post("/createuser/", async (req, res) => {
-  const { id, username, password, role } = req.body;
-  console.log(username, password, role);
+  const { id, username, password, fullname, mobile, email, role } = req.body;
+  // console.log(username, password, role);
   const hashedPassword = await bcrypt.hash(password, 10);
   //   console.log(hashedPassword);
   connection.query(
-    "INSERT INTO user_details(id, username, password, role) values(?,?,?,?)",
-    [id, username, hashedPassword, role],
+    "INSERT INTO user_details(id, username, password, fullname, mobile, email, role) values(?,?,?,?,?,?,?)",
+    [id, username, hashedPassword, fullname, mobile, email, role],
     (error, results) => {
       if (error) {
         res.status(400);
@@ -121,8 +121,8 @@ app.patch("/updateuser/", (req, res) => {
 // UPDATE PASSWORD
 app.patch("/changepassword/", (req, res) => {
   const { username } = req.query;
-  const { oldPassword, password } = req.body;
-  console.log(oldPassword, password, username);
+  const { currentPassword, newPassword } = req.body;
+  console.log(currentPassword, newPassword, username);
   connection.query(
     "SELECT * FROM user_details WHERE username=?",
     [username],
@@ -136,35 +136,39 @@ app.patch("/changepassword/", (req, res) => {
         return;
       }
       const oldHashedPassword = results[0].password;
-      bcrypt.compare(oldPassword, oldHashedPassword, async (err, result) => {
-        if (err) {
-          console.error(err);
-          res
-            .status(500)
-            .send("An error occurred while changing the password.");
-          return;
-        }
-        if (!result) {
-          res.status(401).send("The old password is incorrect.");
-          return;
-        }
-        const newHashedPassword = await bcrypt.hash(password, 10);
-        connection.query(
-          "UPDATE user_details SET password=? WHERE username=?",
-          [newHashedPassword, username],
-          (err, result) => {
-            if (err) {
-              console.error(err);
-              res
-                .status(500)
-                .send("An error occurred while changing the password.");
-            } else {
-              // console.log(result);
-              res.send("Password changed successfully.");
-            }
+      bcrypt.compare(
+        currentPassword,
+        oldHashedPassword,
+        async (err, result) => {
+          if (err) {
+            console.error(err);
+            res
+              .status(500)
+              .send("An error occurred while changing the password.");
+            return;
           }
-        );
-      });
+          if (!result) {
+            res.status(401).send("The old password is incorrect.");
+            return;
+          }
+          const newHashedPassword = await bcrypt.hash(newPassword, 10);
+          connection.query(
+            "UPDATE user_details SET password=? WHERE username=?",
+            [newHashedPassword, username],
+            (err, result) => {
+              if (err) {
+                console.error(err);
+                res
+                  .status(500)
+                  .send("An error occurred while changing the password.");
+              } else {
+                // console.log(result);
+                res.send("Password changed successfully.");
+              }
+            }
+          );
+        }
+      );
     }
   );
 });

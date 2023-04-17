@@ -87,7 +87,7 @@ function Profile() {
     onSubmit: (values) => {
       console.log(values);
       axios
-        .patch("/changepassword/", formikPassword.values, {
+        .patch("/changepassword/", values, {
           params: { username: `${username}` },
         })
         .then((response) => {

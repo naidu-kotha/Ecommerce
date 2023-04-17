@@ -28,10 +28,8 @@
     display: flex;
     flex-wrap: wrap;
     list-style-type: none;
-    justify-content: center;
+    justify-content: space-between;
 }
-
-
 
 .product-card {
     margin: 20px;
