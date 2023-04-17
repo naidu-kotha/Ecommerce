@@ -33,11 +33,20 @@ function Header() {
             <Nav>
               {role === "admin" ? (
                 <>
+                  <Nav.Link className="h-routes" href="/users">
+                    Users List
+                  </Nav.Link>
+                  <Nav.Link className="h-routes" href="/products">
+                    Products
+                  </Nav.Link>
                   <Nav.Link className="h-routes" href="/addproducts">
                     Add Products
                   </Nav.Link>
                   <Nav.Link className="h-routes" href="/allorders">
                     View Orders
+                  </Nav.Link>
+                  <Nav.Link className="h-routes" href="/profile">
+                    Profile
                   </Nav.Link>
                 </>
               ) : (

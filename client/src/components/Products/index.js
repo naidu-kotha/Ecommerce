@@ -23,6 +23,8 @@ function Products() {
   const jwtToken = Cookies.get("jwt_token");
   // console.log(jwtToken);
 
+  const role = Cookies.get("role");
+
   useEffect(() => {
     const category = selectedCategory;
 
@@ -78,24 +80,26 @@ function Products() {
                   <p className="product-brand">by {eachProduct.brand}</p>
                   <p className="product-price">Rs.{eachProduct.price}</p>
                 </div>
-                <div className="product-btn-container">
-                  <Select
-                    options={numberOptions}
-                    defaultValue={numberOptions[0]}
-                    isSearchable={false}
-                    className="product-select"
-                    onChange={(option) => setCartQuantity(option.value)}
-                  />
-                  <button
-                    className="product-cart-btn"
-                    onClick={() => {
-                      addItemToCart(eachProduct, cartQuantity);
-                      setCartQuantity(1);
-                    }}
-                  >
-                    Add to cart
-                  </button>
-                </div>
+                {role === "user" && (
+                  <div className="product-btn-container">
+                    <Select
+                      options={numberOptions}
+                      defaultValue={numberOptions[0]}
+                      isSearchable={false}
+                      className="product-select"
+                      onChange={(option) => setCartQuantity(option.value)}
+                    />
+                    <button
+                      className="product-cart-btn"
+                      onClick={() => {
+                        addItemToCart(eachProduct, cartQuantity);
+                        setCartQuantity(1);
+                      }}
+                    >
+                      Add to cart
+                    </button>
+                  </div>
+                )}
               </div>
             </li>
           ))}

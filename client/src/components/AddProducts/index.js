@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../Header";
 import { storage } from "../../firebase";
 import { useFormik } from "formik";
@@ -9,6 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Select from "react-select";
 import "./index.css";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const intialImage =
   "https://w7.pngwing.com/pngs/88/823/png-transparent-logo-product-design-brand-trademark-new-product-promotion-blue-text-trademark-thumbnail.png";
@@ -42,6 +44,11 @@ function AddProducts() {
   const [url, setUrl] = useState(intialImage);
   const [categoryError, setCategoryError] = useState("");
   const [imageError, setImageError] = useState("");
+  const [showAddButton, setShowAddButton] = useState(false);
+
+  const navigate = useNavigate();
+
+  const jwtToken = Cookies.get("jwt_token");
 
   const formikAddProduct = useFormik({
     initialValues: {
@@ -62,6 +69,7 @@ function AddProducts() {
       }
       if (url === intialImage) {
         setImageError("Upload product image");
+        setShowAddButton(false);
       } else {
         setImageError("");
       }
@@ -70,11 +78,18 @@ function AddProducts() {
         values.category = selectedCategory;
         console.log(values);
         axios
-          .post("/addproduct/", values)
+          .post("/addproduct/", values, {
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+            },
+          })
           .then((response) => {
             console.log(response);
             toast.success(response.data.message);
             formikAddProduct.resetForm();
+            setTimeout(() => {
+              navigate("/products", { replace: true });
+            }, 1500);
           })
           .catch((e) => {
             console.log(e);
@@ -89,11 +104,14 @@ function AddProducts() {
   });
 
   const handleImageChange = (e) => {
+    setShowAddButton(true);
+    setImageError("");
     if (e.target.files[0] !== "") {
       setImage(e.target.files[0]);
     }
   };
   const handlesubmit = () => {
+    setShowAddButton(false);
     const imageRef = ref(storage, "image" + v4());
     console.log(imageRef);
     uploadBytes(imageRef, image)
@@ -201,12 +219,14 @@ function AddProducts() {
               onChange={handleImageChange}
             />
             {imageError && <p className="m-error">{imageError}</p>}
-            <button
-              className="add-product-submit-button"
-              onClick={handlesubmit}
-            >
-              Add Image
-            </button>
+            {showAddButton && (
+              <button
+                className="add-product-submit-button"
+                onClick={handlesubmit}
+              >
+                Add Image
+              </button>
+            )}
           </div>
         </div>
       </div>

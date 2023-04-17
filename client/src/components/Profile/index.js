@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import Modal from "react-modal";
-// import { Modal } from "react-bootstrap";
+// import Modal from "react-modal";
+import { Modal, ModalBody, ModalHeader } from "react-bootstrap";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
@@ -22,21 +22,9 @@ function Profile() {
 
   const userDetails = JSON.parse(Cookies.get("userDetails"));
   // console.log(userDetails);
-  const { username, fullname, email, mobile } = userDetails;
+  const { username, fullname, email, mobile, role } = userDetails;
 
   const jwtToken = Cookies.get("jwt_token");
-
-  const customStyles = {
-    content: {
-      width: "50%",
-      margin: "auto",
-      // display: "flex",
-      // justifyContent: "center",
-      // alignItems: "center",
-      height: "100vh",
-      overflow: "hidden",
-    },
-  };
 
   const navigate = useNavigate();
 
@@ -109,7 +97,7 @@ function Profile() {
         })
         .catch((e) => {
           console.log(e);
-          toast.warning("Unable to change password");
+          toast.warning(e.response.data);
         });
     },
     validationSchema: Yup.object({
@@ -150,24 +138,26 @@ function Profile() {
   return (
     <>
       <ToastContainer />
-
       <div className="p-margin">
         <Header />
         <div className="profile-card-align-middle">
           <div className="profile-card-container">
             <div>
               <p className="profile-name-headings">
-                username: <span className="profile-inputs">{username}</span>
+                Username: <span className="profile-inputs">{username}</span>
               </p>
               <p className="profile-name-headings">
-                fullname: <span className="profile-inputs">{fullname}</span>
+                Fullname: <span className="profile-inputs">{fullname}</span>
               </p>
               <p className="profile-name-headings">
-                email:
+                Email:
                 <span className="profile-inputs">{email}</span>
               </p>
               <p className="profile-name-headings">
-                number: <spam className="profile-inputs">{mobile}</spam>
+                Mobile: <spam className="profile-inputs">{mobile}</spam>
+              </p>
+              <p className="profile-name-headings">
+                Role: <spam className="profile-inputs">{role}</spam>
               </p>
             </div>
 
@@ -187,13 +177,9 @@ function Profile() {
             </div>
           </div>
         </div>
-        <div>
-          {/* <Modal size="xs" /> */}
-          <Modal
-            style={customStyles}
-            className="p-model-size"
-            isOpen={isModalOpen}
-          >
+        <Modal centered size="xs" show={isModalOpen} onHide={toggleModal}>
+          <ModalHeader closeButton>Edit Profile</ModalHeader>
+          <ModalBody>
             <form className="p-form" onSubmit={formikProfile.handleSubmit}>
               <h1 className="p-profile_name">Profile</h1>
               <div className="p-inputs-align">
@@ -203,6 +189,7 @@ function Profile() {
                   className="p-input5"
                   type="text"
                   placeholder="Enter name"
+                  value={fullname}
                 />
                 {formikProfile.touched.fullname &&
                 formikProfile.errors.fullname ? (
@@ -216,6 +203,7 @@ function Profile() {
                   className="p-input5 number-input"
                   type="number"
                   placeholder="Enter Mobile"
+                  value={mobile}
                 />
                 {formikProfile.touched.mobile && formikProfile.errors.mobile ? (
                   <div className="p-error">{formikProfile.errors.mobile}</div>
@@ -228,6 +216,7 @@ function Profile() {
                   className="p-input5"
                   type="email"
                   placeholder="Enter Email"
+                  value={email}
                 />
                 {formikProfile.touched.email && formikProfile.errors.email ? (
                   <div className="p-error">{formikProfile.errors.email}</div>
@@ -250,127 +239,120 @@ function Profile() {
                 </div>
               </div>
             </form>
-          </Modal>
-        </div>
-
+          </ModalBody>
+        </Modal>
         <Modal
-          isOpen={isPasswordModalOpen}
-          className="modal-style p-model-size"
+          centered
+          size="xl"
+          show={isPasswordModalOpen}
+          onHide={togglePasswordModal}
         >
-          <div className="c-margin">
-            <div className="c-aligning">
-              {/* <h1 className="c-profile_name">Change Password</h1> */}
+          <ModalHeader closeButton>Edit Profile</ModalHeader>
+          <ModalBody>
+            <div className="c-margin">
               <div className="c-aligning">
-                <form className="c-form" onSubmit={formikPassword.handleSubmit}>
-                  <div className="c-inputs-align">
-                    <label className="user-details">Current Password</label>
-                    <input
-                      className="c-input1"
-                      {...formikPassword.getFieldProps("currentPassword")}
-                      type="password"
-                      placeholder="Enter current password"
-                    />
-                    {formikPassword.touched.currentPassword &&
-                    formikPassword.errors.currentPassword ? (
-                      <div className="c-error">
-                        {formikPassword.errors.currentPassword}
-                      </div>
-                    ) : null}
-                  </div>
-                  <div className="c-inputs-align">
-                    <p className="c-names">Enter New Password</p>
-                    <div className="p-container-visible">
+                {/* <h1 className="c-profile_name">Change Password</h1> */}
+                <div className="c-aligning">
+                  <form
+                    className="c-form"
+                    onSubmit={formikPassword.handleSubmit}
+                  >
+                    <div className="c-inputs-align">
+                      <label className="user-details">Current Password</label>
                       <input
-                        {...formikPassword.getFieldProps("newPassword")}
                         className="c-input1"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Enter New Password"
+                        {...formikPassword.getFieldProps("currentPassword")}
+                        type="password"
+                        placeholder="Enter current password"
                       />
-                      <span>
+                      {formikPassword.touched.currentPassword &&
+                      formikPassword.errors.currentPassword ? (
+                        <div className="c-error">
+                          {formikPassword.errors.currentPassword}
+                        </div>
+                      ) : null}
+                    </div>
+                    <div className="c-inputs-align">
+                      <p className="c-names">Enter New Password</p>
+                      <div className="p-container-visible">
+                        <input
+                          {...formikPassword.getFieldProps("newPassword")}
+                          className="c-input1"
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Enter New Password"
+                        />
+                        <span>
+                          <button
+                            type="button"
+                            className="p-eye-button p-password-symbol"
+                            onClick={togglePasswordVisibility}
+                          >
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                          </button>
+                        </span>
+                      </div>
+
+                      {formikPassword.touched.newPassword &&
+                      formikPassword.errors.newPassword ? (
+                        <div className="c-error">
+                          {formikPassword.errors.newPassword}
+                        </div>
+                      ) : null}
+                    </div>
+                    <div className="c-inputs-align">
+                      <p className="c-names">Re-Enter New Password</p>
+                      <div className="p-container-visible">
+                        <input
+                          {...formikPassword.getFieldProps(
+                            "reEnterNewPassword"
+                          )}
+                          className="c-input1"
+                          type={showPassword2 ? "text" : "password"}
+                          placeholder="Enter New Password"
+                        />
+                        <span>
+                          <button
+                            type="button"
+                            className="p-eye-button p-password-symbol"
+                            onClick={togglePasswordVisibility2}
+                          >
+                            {showPassword2 ? <FaEyeSlash /> : <FaEye />}
+                          </button>
+                        </span>
+                      </div>
+
+                      {formikPassword.touched.reEnterNewPassword &&
+                      formikPassword.errors.reEnterNewPassword ? (
+                        <div className="c-error">
+                          {formikPassword.errors.reEnterNewPassword}
+                        </div>
+                      ) : null}
+                    </div>
+                    <hr />
+                    <div className="c-left-align">
+                      <div className="c-btn-align3">
                         <button
+                          className="c-buttons c-btn-cancel"
                           type="button"
-                          className="p-eye-button p-password-symbol"
-                          onClick={togglePasswordVisibility}
+                          onClick={togglePasswordModal}
                         >
-                          {showPassword ? <FaEyeSlash /> : <FaEye />}
+                          cancel
                         </button>
-                      </span>
-                    </div>
-
-                    {formikPassword.touched.newPassword &&
-                    formikPassword.errors.newPassword ? (
-                      <div className="c-error">
-                        {formikPassword.errors.newPassword}
-                      </div>
-                    ) : null}
-                  </div>
-                  <div className="c-inputs-align">
-                    <p className="c-names">Re-Enter New Password</p>
-                    <div className="p-container-visible">
-                      <input
-                        {...formikPassword.getFieldProps("reEnterNewPassword")}
-                        className="c-input1"
-                        type={showPassword2 ? "text" : "password"}
-                        placeholder="Enter New Password"
-                      />
-                      <span>
-                        <button
-                          type="button"
-                          className="p-eye-button p-password-symbol"
-                          onClick={togglePasswordVisibility2}
-                        >
-                          {showPassword2 ? <FaEyeSlash /> : <FaEye />}
+                        <button className="c-buttons c-btn-save" type="submit">
+                          save
                         </button>
-                      </span>
-                    </div>
-
-                    {formikPassword.touched.reEnterNewPassword &&
-                    formikPassword.errors.reEnterNewPassword ? (
-                      <div className="c-error">
-                        {formikPassword.errors.reEnterNewPassword}
                       </div>
-                    ) : null}
-                  </div>
-                  {/* <div className="c-inputs-align">
-                    <p className="c-names">Re-Enter New Password</p>
-                    <input
-                      {...formikPassword.getFieldProps("reEnterNewPassword")}
-                      className="c-input1"
-                      type="password"
-                      placeholder="Re-Enter New Password"
-                    />
-                    {formikPassword.touched.reEnterNewPassword &&
-                    formikPassword.errors.reEnterNewPassword ? (
-                      <div className="c-error">
-                        {formikPassword.errors.reEnterNewPassword}
-                      </div>
-                    ) : null}
-                  </div> */}
-
-                  <hr />
-                  <div className="c-left-align">
-                    <div className="c-btn-align3">
-                      <button
-                        className="c-buttons c-btn-cancel"
-                        type="button"
-                        onClick={togglePasswordModal}
-                      >
-                        cancel
-                      </button>
-                      <button className="c-buttons c-btn-save" type="submit">
-                        save
-                      </button>
                     </div>
-                  </div>
-                </form>
+                  </form>
+                </div>
+                <img
+                  className="img"
+                  alt="change password bg"
+                  src="https://res.cloudinary.com/dck3ikgrn/image/upload/v1681409529/5fz9SMYxWbv44jFVcD4vmd-970-80.jpg_wdqezt.webp"
+                />
               </div>
-              <img
-                className="img"
-                alt="change password bg"
-                src="https://res.cloudinary.com/dck3ikgrn/image/upload/v1681409529/5fz9SMYxWbv44jFVcD4vmd-970-80.jpg_wdqezt.webp"
-              />
             </div>
-          </div>
+          </ModalBody>
         </Modal>
       </div>
     </>

@@ -41,12 +41,16 @@ const tokenAuthentication = (req, res, next) => {
 };
 
 // GET USERS
-app.get("/getusers/", (req, res) => {
+app.get("/getusers/", tokenAuthentication, (req, res) => {
   connection.query("SELECT * FROM user_details", (error, results) => {
     if (error) {
       res.status(400);
       res.send(error);
     } else {
+      results.map((each) => {
+        delete each.password;
+      });
+      console.log(results);
       res.send(results);
     }
   });
@@ -136,6 +140,10 @@ app.patch("/changepassword/", tokenAuthentication, (req, res) => {
         res.status(404).send("User not found");
         return;
       }
+      if (currentPassword === newPassword) {
+        res.status(400).send("Old password and new password cannot be same");
+        return;
+      }
       const oldHashedPassword = results[0].password;
       bcrypt.compare(
         currentPassword,
@@ -212,7 +220,7 @@ app.post("/login/", (req, res) => {
 });
 
 // ADD NEW PRODUCT TO TABLE
-app.post("/addproduct/", (req, res) => {
+app.post("/addproduct/", tokenAuthentication, (req, res) => {
   const { title, category, imageUrl, price, brand } = req.body;
 
   connection.query(

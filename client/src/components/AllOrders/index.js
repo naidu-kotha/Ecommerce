@@ -42,10 +42,7 @@ function UserOrders() {
           show={showAddress}
           onHide={() => setShowAddress(false)}
         >
-          <ModalHeader closeButton>
-            Address
-            {/* <button onClick={() => setShowAddress(!showAddress)}>X</button> */}
-          </ModalHeader>
+          <ModalHeader closeButton>Address</ModalHeader>
           <ModalBody>
             <div className="all-orders-details-container">
               <p className="all-orders-details">

@@ -1,0 +1,36 @@
+.users-bg {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    height: 100vh;
+    padding: 20px 40px;
+}
+
+.users-heading {
+    font-family: "Bree Serif";
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.users-container {
+    padding-left: 0;
+    list-style-type: none;
+    width: 50%;
+}
+
+.user-details-container {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    padding: 12px 24px;
+    flex-wrap: wrap;
+}
+
+.users-page-details {
+    font-family: "Sans-Serif";
+    font-size: 16px;
+    margin: 10px;
+}

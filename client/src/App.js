@@ -16,11 +16,13 @@ import Signup from "./components/Signup";
 import UserOrders from "./components/UserOrders";
 import CartContext from "./context/CartContext";
 import AllOrders from "./components/AllOrders";
+import Users from "./components/Users";
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
 
   const jwtToken = Cookies.get("jwt_token");
+  const role = Cookies.get("role");
 
   const addItemToCart = (item, quantity) => {
     const userDetails = JSON.parse(Cookies.get("userDetails"));
@@ -47,25 +49,13 @@ function App() {
       });
   };
 
-  // const removeItemFromCart = (itemId) => {
-  //   setCartItems(cartItems.filter((cartItem) => cartItem.id !== itemId));
-  // };
-
-  // const clearCart = () => {
-  //   setCartItems([]);
-  // };
-
   return (
     <BrowserRouter>
       <CartContext.Provider
         value={{
           cartItems,
           addItemToCart,
-          // removeItemFromCart,
-          // clearCart,
           setCartItems,
-          // setUsername,
-          // userDetails,
         }}
       >
         <Routes>
@@ -83,9 +73,15 @@ function App() {
             path="/products"
             exact
             element={
-              <ProtectedRoute>
-                <Products />
-              </ProtectedRoute>
+              role === "user" ? (
+                <ProtectedRoute>
+                  <Products />
+                </ProtectedRoute>
+              ) : (
+                <AdminProtectedRoute>
+                  <Products />
+                </AdminProtectedRoute>
+              )
             }
           />
           <Route
@@ -101,9 +97,15 @@ function App() {
             path="/profile"
             exact
             element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
+              role === "user" ? (
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              ) : (
+                <AdminProtectedRoute>
+                  <Profile />
+                </AdminProtectedRoute>
+              )
             }
           />
           <Route
@@ -121,6 +123,15 @@ function App() {
             element={
               <AdminProtectedRoute>
                 <AllOrders />
+              </AdminProtectedRoute>
+            }
+          />
+          <Route
+            path="/users"
+            exact
+            element={
+              <AdminProtectedRoute>
+                <Users />
               </AdminProtectedRoute>
             }
           />

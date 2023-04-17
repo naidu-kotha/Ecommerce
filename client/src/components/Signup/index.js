@@ -7,24 +7,24 @@ import * as Yup from "yup";
 import { v4 as uuidv4 } from "uuid";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Select from "react-select";
+// import Select from "react-select";
 
 import "./index.css";
 
 function SignUp() {
-  const roleConstants = [
-    {
-      label: "ADMIN",
-      value: "admin",
-    },
-    {
-      label: "USER",
-      value: "user",
-    },
-  ];
+  //   const roleConstants = [
+  //     {
+  //       label: "ADMIN",
+  //       value: "admin",
+  //     },
+  //     {
+  //       label: "USER",
+  //       value: "user",
+  //     },
+  //   ];
 
   const [errorMsg, setErrorMsg] = useState("");
-  const [role, selectRole] = useState(roleConstants[1].value);
+  // const [role, selectRole] = useState(roleConstants[1].value);
   const [showPassword, setShowPassword] = useState(false);
 
   //const [submitting, setSubmitting] = useState(false);
@@ -43,7 +43,7 @@ function SignUp() {
     onSubmit: (values) => {
       const id = uuidv4();
       values.id = id;
-      values.role = role;
+      values.role = "user";
       //setSubmitting(true);
       console.log(values);
       axios
@@ -52,10 +52,10 @@ function SignUp() {
           setErrorMsg("");
           console.log(response);
           if (response.statusText === "OK") {
-            // alert("Sign up success. Proceed to Login.");
             toast.success("Sign up success. Proceed to Login.");
-
-            navigate("/login", { replace: true });
+            setTimeout(() => {
+              navigate("/login", { replace: true });
+            }, 2500);
           }
           formik.resetForm();
         })
@@ -102,14 +102,15 @@ function SignUp() {
     setShowPassword(!showPassword);
   };
 
-  const setRole = (event) => {
-    console.log(event);
-    selectRole(event.value);
-  };
-  console.log(formik.errors);
+  // const setRole = (event) => {
+  //   console.log(event);
+  //   selectRole(event.value);
+  // };
+  // console.log(formik.errors);
 
   return (
     <div className="align-left">
+      <ToastContainer />
       <div className="align-middle">
         <div className="s-align-name">
           <h1 className="s-sign">Sign Up</h1>
@@ -187,7 +188,7 @@ function SignUp() {
                 <div className="p-error">{formik.errors.email}</div>
               ) : null}
             </div>
-            <div className="s-input-container">
+            {/* <div className="s-input-container">
               <label htmlFor="role" className="s-disc">
                 Role*
               </label>
@@ -197,7 +198,7 @@ function SignUp() {
                 options={roleConstants}
                 onChange={setRole}
               />
-            </div>
+            </div> */}
             <div className="s-btn-align">
               <button type="submit" className="s-btn">
                 Sign Up
@@ -219,7 +220,6 @@ function SignUp() {
           />
         </div>
       </div>
-      <ToastContainer />
     </div>
   );
 }

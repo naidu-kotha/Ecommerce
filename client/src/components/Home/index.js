@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 import Header from "../Header";
 import "./index.css";
 
 function Home() {
-  const role = Cookies.get("role");
+  // const role = Cookies.get("role");
   return (
     <div className="h-bg-container">
       <Header />
@@ -25,7 +25,7 @@ function Home() {
           </p>
           <Link to="/products">
             <button className="h-btn-shop" to="/products">
-              {role === "admin" ? "Add Products" : "Shop now"}
+              View Products
             </button>
           </Link>
         </div>
