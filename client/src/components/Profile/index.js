@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-// import Modal from "react-modal";
-import { Modal } from "react-bootstrap";
+import Modal from "react-modal";
+// import { Modal } from "react-bootstrap";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
@@ -188,8 +188,8 @@ function Profile() {
           </div>
         </div>
         <div>
-          <Modal size="xs" />
-          {/* <Modal
+          {/* <Modal size="xs" /> */}
+          <Modal
             style={customStyles}
             className="p-model-size"
             isOpen={isModalOpen}
@@ -250,7 +250,7 @@ function Profile() {
                 </div>
               </div>
             </form>
-          </Modal> */}
+          </Modal>
         </div>
 
         <Modal

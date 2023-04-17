@@ -54,7 +54,7 @@ function UserOrders() {
   return (
     <>
       <Header />
-      <div>
+      <div className="user-orders-container">
         <h1 className="orders-heading">Orders</h1>
         {ordersList.length > 0 ? showOrders() : null}
       </div>

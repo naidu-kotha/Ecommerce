@@ -27,3 +27,10 @@
 .order-item-details-container {
     margin-left: 30px;
 }
+
+.user-orders-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

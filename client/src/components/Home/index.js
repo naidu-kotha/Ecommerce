@@ -25,7 +25,7 @@ function Home() {
           </p>
           <Link to="/products">
             <button className="h-btn-shop" to="/products">
-              {role === "admin" ? "Add Producst" : "Shop now"}
+              {role === "admin" ? "Add Products" : "Shop now"}
             </button>
           </Link>
         </div>
