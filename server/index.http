@@ -1,6 +1,7 @@
 ###
 
 GET http://localhost:5000/getusers/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5haWR1IiwiaWF0IjoxNjgxODA5NTcxfQ.oA80lyHmTtEuODzP8Oz5zGZddiJwWa9gO7z562aJ7kQ
 
 ###
 
@@ -13,8 +14,12 @@ POST http://localhost:5000/createuser/
 Content-Type: application/json
 
 {   
-    "username":"uday",
-    "password":"uday@143"
+    "username":"naidu",
+    "password":"Batman@16",
+    "fullname":"sriniva naidu",
+    "mobile":"8897634340",
+    "email":"naidu@gmail.com",
+    "role":"admin"
 }
 
 ###
@@ -45,7 +50,7 @@ Content-Type: application/json
 
 {
     "username":"naidu",
-    "password":"batman16"
+    "password":"Batman@16"
 }
 
 ###

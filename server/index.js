@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 
+const PORT = process.env.PORT || 5000;
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -211,6 +212,7 @@ app.post("/login/", (req, res) => {
         }
         const payload = { username: username };
         const jwtToken = jwt.sign(payload, "secret_key");
+        console.log(jwtToken);
         delete results[0].password;
         res.send({ jwtToken, results });
         // console.log(results[0].password);
@@ -397,6 +399,6 @@ app.delete("/deleteitem/", (req, res) => {
   }
 });
 
-app.listen(5000, () => {
-  console.log("Server running at http://localhost:5000");
+app.listen(PORT, () => {
+  console.log(`Server Running at http://localhost:${PORT}`);
 });

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 // import Modal from "react-modal";
-import { Modal, ModalBody, ModalHeader } from "react-bootstrap";
+import { Modal, ModalBody, ModalFooter, ModalHeader } from "react-bootstrap";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
@@ -30,9 +30,9 @@ function Profile() {
 
   const formikProfile = useFormik({
     initialValues: {
-      fullname: "",
-      mobile: "",
-      email: "",
+      fullname: fullname,
+      mobile: mobile,
+      email: email,
     },
     onSubmit: (values) => {
       // console.log(values);
@@ -144,20 +144,24 @@ function Profile() {
           <div className="profile-card-container">
             <div>
               <p className="profile-name-headings">
-                Username: <span className="profile-inputs">{username}</span>
+                <span className="label-width">Username: </span>
+                <span className="profile-inputs">{username}</span>
               </p>
               <p className="profile-name-headings">
-                Fullname: <span className="profile-inputs">{fullname}</span>
+                <span className="label-width">Fullname:</span>{" "}
+                <span className="profile-inputs">{fullname}</span>
               </p>
               <p className="profile-name-headings">
-                Email:
+                <span className="label-width"> Email:</span>
                 <span className="profile-inputs">{email}</span>
               </p>
               <p className="profile-name-headings">
-                Mobile: <spam className="profile-inputs">{mobile}</spam>
+                <span className="label-width">Mobile:</span>{" "}
+                <spam className="profile-inputs">{mobile}</spam>
               </p>
               <p className="profile-name-headings">
-                Role: <spam className="profile-inputs">{role}</spam>
+                <span className="label-width">Role:</span>{" "}
+                <spam className="profile-inputs">{role}</spam>
               </p>
             </div>
 
@@ -189,7 +193,6 @@ function Profile() {
                   className="p-input5"
                   type="text"
                   placeholder="Enter name"
-                  value={fullname}
                 />
                 {formikProfile.touched.fullname &&
                 formikProfile.errors.fullname ? (
@@ -203,7 +206,6 @@ function Profile() {
                   className="p-input5 number-input"
                   type="number"
                   placeholder="Enter Mobile"
-                  value={mobile}
                 />
                 {formikProfile.touched.mobile && formikProfile.errors.mobile ? (
                   <div className="p-error">{formikProfile.errors.mobile}</div>
@@ -216,28 +218,27 @@ function Profile() {
                   className="p-input5"
                   type="email"
                   placeholder="Enter Email"
-                  value={email}
                 />
                 {formikProfile.touched.email && formikProfile.errors.email ? (
                   <div className="p-error">{formikProfile.errors.email}</div>
                 ) : null}
               </div>
-
-              <hr />
-              <div className="p-left-align">
-                <div className="p-btn-align2">
-                  <button
-                    className="p-buttons p-btn-cancel"
-                    type="button"
-                    onClick={toggleModal}
-                  >
-                    cancel
-                  </button>
-                  <button className="p-buttons p-btn-save" type="submit">
-                    save
-                  </button>
+              <ModalFooter>
+                <div className="p-left-align">
+                  <div className="p-btn-align2">
+                    <button
+                      className="p-buttons p-btn-cancel"
+                      type="button"
+                      onClick={toggleModal}
+                    >
+                      cancel
+                    </button>
+                    <button className="p-buttons p-btn-save" type="submit">
+                      save
+                    </button>
+                  </div>
                 </div>
-              </div>
+              </ModalFooter>
             </form>
           </ModalBody>
         </Modal>
